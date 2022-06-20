@@ -1,0 +1,119 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgba(32, 33, 36, 0.4);
+  z-index: 10;
+}
+
+.container {
+  position: relative;
+  width: 555px;
+  display: flex;
+  background-color: var(--white);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 47px 0 23px 1px;
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.03);
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--dark-grey);
+  margin-bottom: 35px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 395px;
+}
+
+.label {
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: var(--dark-grey);
+}
+
+.input {
+  width: 395px;
+  padding: 12px 242px 12px 24px;
+  background-color: var(--white-two);
+}
+
+.error {
+  height: 22px;
+  font-size: 10px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.2;
+  letter-spacing: normal;
+  color: var(--strawberry);
+}
+
+.policy {
+  width: 284px;
+  margin-top: 19px;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--dark-grey);
+}
+
+.submit {
+  width: 395px;
+  margin-top: 51px;
+  padding: 12px 54.5px 14px 54.5px;
+  box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
+  background-color: var(--pale-orange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: var(--white);
+}
+
+.footer {
+  margin-top: 62px;
+  padding-top: 21px;
+  border-top: var(--white-three) 1px solid;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.link {
+  color: var(--pumpkin-orange);
+}
+
+.choice{
+    width: 395px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 26px;
+    padding-bottom: 40px;
+}
