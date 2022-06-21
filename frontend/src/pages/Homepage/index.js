@@ -1,5 +1,8 @@
-import Login from 'src/components/Modal/Login'
-import Register from 'src/components/Modal/Register';
+import styles from './Homepage.module.scss';
+import classnames from 'classnames/bind';
+import {Register,Login,ForgotPassword} from 'src/components/Modal';
+
+const cx = classnames.bind(styles);
 
 function Homepage() {
     return <Login/>;

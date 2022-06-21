@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const {generateToken} = require('../helpers/auth');
+const {sendMail} = require('../services/mailgun');
 
 async function register(req, res) {
   const { name, email, password } = req.body;
@@ -20,6 +21,7 @@ async function register(req, res) {
     email,
     password: hashedPassword,
   });
+  sendMail(from="baohuynhxayda@gmail.com",to=email,subject="Register successfully",test="Register successfully");
   res.json({ msg: "a" });
 }
 
@@ -27,6 +29,7 @@ async function login(req, res) {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
+    sendMail(from="baohuynhxayda@gmail.com",to=email,subject="Login successfully",test="Login successfully");
     res.cookie('token',generateToken(user._id)).send();
   } else {
     res.status(400);

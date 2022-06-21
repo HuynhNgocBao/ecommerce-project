@@ -15,11 +15,13 @@ function Login() {
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     setFormData((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post("/api/auth/login", formData)
@@ -28,11 +30,15 @@ function Login() {
       console.log(user);
     })
   };
+
   return (
     <div className={cx("wrapper")}>
       <form className={cx("container")}>
         <img src={crossSvg} className={cx("close")} alt="close" />
-        <span className={cx("title")}>Login</span>
+        <div className={cx('header')}>
+          <span className={cx("title")}>Login</span>
+          <span className={cx("error")}>Please enter a valid email</span>
+        </div>
         <div className={cx("form-group")}>
           <label className={cx("label")}>EMAIL</label>
           <input
@@ -43,7 +49,6 @@ function Login() {
             value={formData.email}
             onChange={handleChange}
           />
-          <span className={cx("error")}>Please enter a valid email</span>
         </div>
         <div className={cx("form-group")}>
           <label className={cx("label")}>PASSWORD</label>
@@ -55,9 +60,6 @@ function Login() {
             value = {formData.password}
             onChange={handleChange}
           />
-          <span className={cx("error")}>
-            Your passwords must be more than 6 characters!
-          </span>
         </div>
         <div className={cx("choice")}>
           <div className={cx("remember-password")}>
@@ -70,7 +72,7 @@ function Login() {
         </div>
         <button className={cx("submit")} onClick={handleSubmit}>Log in</button>
         <div className={cx("footer")}>
-          Don't you have an account?{" "}
+          Don't you have an account?
           <Link className={cx("link")} to="/">
             Register
           </Link>
