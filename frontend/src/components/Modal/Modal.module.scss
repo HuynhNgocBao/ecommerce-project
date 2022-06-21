@@ -8,6 +8,7 @@
   bottom: 0;
   top: 0;
   background-color: rgba(32, 33, 36, 0.4);
+  font-size: 14px;
   z-index: 10;
 }
 
@@ -59,6 +60,10 @@
   width: 395px;
   padding: 12px 242px 12px 24px;
   background-color: var(--white-two);
+  border: 1px solid transparent;
+  &:focus, &:not(:placeholder-shown){
+    border-color: var(--greyish-two);
+  }
 }
 
 .error {
@@ -75,7 +80,6 @@
 .policy {
   width: 284px;
   margin-top: 19px;
-  font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -110,10 +114,21 @@
   color: var(--pumpkin-orange);
 }
 
-.choice{
-    width: 395px;
-    display: flex;
-    justify-content: space-between;
-    padding-top: 26px;
-    padding-bottom: 40px;
+.choice {
+  width: 395px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 26px;
+  padding-bottom: 40px;
+}
+
+.check-box {
+  accent-color: var(--pumpkin-orange);
+}
+
+.forgot-password {
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.57;
+  color: var(--greyish-brown);
 }
