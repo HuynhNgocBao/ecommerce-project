@@ -5,7 +5,7 @@ import {Register,Login,ForgotPassword} from 'src/components/Modal';
 const cx = classnames.bind(styles);
 
 function Homepage() {
-    return <Login/>;
+    return <></>;
 }
 
 export default Homepage;

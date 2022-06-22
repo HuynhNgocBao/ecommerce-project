@@ -1,20 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-export const getUser = createAsyncThunk('api/user', async()=>{
-    const response = await axios.get('/api/user');
+export const getUser = createAsyncThunk('api/getUser', async()=>{
+    const response = await axios.get('/api/user').catch(err=>{throw err.response.data});
     return response.data;
+});
+
+export const logoutUser = createAsyncThunk('api/logoutUser', async()=>{
+    await axios.post('/api/auth/logout').catch(err=>{throw err.response.data});
 })
 
 const initialState = {
     user: null,
     isLoading: true,
+    error: "",
 };
 
 export const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        setError: (state,action)=>{
+            state.error = action.payload;
+        },
+        clearError: state=>{state.error = ""},
+    },
     extraReducers: (builder)=>{
         builder.addCase(getUser.pending, state=>{
             state.isLoading = true;
@@ -23,7 +33,23 @@ export const authSlice = createSlice({
             state.user = action.payload;
             state.isLoading = false;
         })
+        builder.addCase(getUser.rejected, (state,action)=>{
+            state.error = action.payload;
+            state.isLoading = true;
+        })
+        builder.addCase(logoutUser.pending, state=>{
+            state.isLoading = true;
+        })
+        builder.addCase(logoutUser.fulfilled, state=>{
+            state.user = null;
+            state.isLoading = false;
+        })
+        builder.addCase(logoutUser.rejected, (state,action)=>{
+            state.error = action.payload;
+            state.isLoading = true;
+        })
     }
 })
 
+export const {setError, clearError} = authSlice.actions;
 export default authSlice.reducer;

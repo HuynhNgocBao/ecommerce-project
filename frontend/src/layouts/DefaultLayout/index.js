@@ -1,4 +1,5 @@
-import {Header, Footer} from 'src/layouts/components'
+import Header from 'src/components/Header';
+import Footer from 'src/components/Footer';
 import './defaultLayout.module.scss'
 function DefaultLayout({children}) {
     return <div>

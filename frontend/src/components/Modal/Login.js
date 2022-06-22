@@ -1,16 +1,20 @@
 import styles from "./Modal.module.scss";
 import classnames from "classnames/bind";
 import axios from "axios";
-import {useState} from 'react';
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import crossSvg from "src/assets/images/cross.svg";
 import { getUser } from "src/features/auth/authSlice";
+import { showModal, closeModal } from "src/features/modal/modalSlice";
+import { setError, clearError } from "src/features/auth/authSlice";
 const cx = classnames.bind(styles);
 
 function Login() {
   const dispatch = useDispatch();
-  const user = useSelector(state=>state.auth.user);
+  const user = useSelector((state) => state.auth.user);
+  const errormsg = useSelector((state) => state.auth.error);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,20 +28,40 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("/api/auth/login", formData)
-    .then(()=>{
-      dispatch(getUser());
-      console.log(user);
-    })
+    axios
+      .post("/api/auth/login", formData)
+      .then(() => {
+        dispatch(clearError());
+        dispatch(getUser());
+        dispatch(closeModal());
+      })
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+      });
+  };
+
+  const handleCloseModal = (e) => {
+    dispatch(closeModal());
+    dispatch(clearError());
   };
 
   return (
-    <div className={cx("wrapper")}>
-      <form className={cx("container")}>
-        <img src={crossSvg} className={cx("close")} alt="close" />
-        <div className={cx('header')}>
+    <div className={cx("wrapper")} onClick={handleCloseModal}>
+      <form
+        className={cx("container")}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <img
+          src={crossSvg}
+          className={cx("close")}
+          onClick={handleCloseModal}
+          alt="close"
+        />
+        <div className={cx("header")}>
           <span className={cx("title")}>Login</span>
-          <span className={cx("error")}>Please enter a valid email</span>
+          <span className={cx("error", "error-header")}>{errormsg}</span>
         </div>
         <div className={cx("form-group")}>
           <label className={cx("label")}>EMAIL</label>
@@ -53,11 +77,11 @@ function Login() {
         <div className={cx("form-group")}>
           <label className={cx("label")}>PASSWORD</label>
           <input
-            name = "password"
+            name="password"
             className={cx("input")}
             placeholder="Enter your password..."
             type="password"
-            value = {formData.password}
+            value={formData.password}
             onChange={handleChange}
           />
         </div>
@@ -66,16 +90,27 @@ function Login() {
             <input type="checkbox" className={cx("check-box")} />
             <span>Remember password</span>
           </div>
-          <Link to="/" className={cx("forgot-password")}>
+          <span
+            className={cx("forgot-password")}
+            onClick={() => dispatch(showModal("forgotpassword"))}
+          >
             Forgot your password?
-          </Link>
+          </span>
         </div>
-        <button className={cx("submit")} onClick={handleSubmit}>Log in</button>
+        <button className={cx("submit")} onClick={handleSubmit}>
+          Log in
+        </button>
         <div className={cx("footer")}>
           Don't you have an account?
-          <Link className={cx("link")} to="/">
+          <span
+            className={cx("link")}
+            onClick={() => {
+              dispatch(showModal("register"));
+              dispatch(clearError());
+            }}
+          >
             Register
-          </Link>
+          </span>
         </div>
       </form>
     </div>

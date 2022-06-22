@@ -51,6 +51,9 @@
   display: flex;
   flex-direction: column;
   width: 395px;
+  &~.form-group{
+    margin-top: 24px;
+  }
 }
 
 .label {
@@ -82,6 +85,10 @@
 
 .error{
   color: var(--strawberry);
+}
+
+.error-header{
+  text-align: center;
 }
 
 .policy {

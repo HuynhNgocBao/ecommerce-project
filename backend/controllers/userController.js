@@ -9,8 +9,7 @@ async function getUser(req,res){
         })
     }
     else{
-        res.status(400);
-        throw new Error("User not found");
+        res.status(404).send("User not found");
     }
 }
 
