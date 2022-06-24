@@ -3,7 +3,6 @@ import classnames from "classnames/bind";
 import axios from "axios";
 import {useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import crossSvg from "src/assets/images/cross.svg";
 import {showModal, closeModal} from 'src/features/modal/modalSlice';
 import { setError, clearError } from "src/features/auth/authSlice";

@@ -1,14 +1,14 @@
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
-import './defaultLayout.module.scss'
+import styles from './defaultLayout.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 function DefaultLayout({children}) {
-    return <div>
-        <Header/>
-        <div>
-            {children}
-        </div>
-        <Footer/>
-    </div>;
+    return <>
+            <Header/>
+                {children}
+            <Footer/>
+    </>;
 }
 
 export default DefaultLayout;

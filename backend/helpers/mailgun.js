@@ -18,4 +18,4 @@ function sendMail(messageData) {
     });
 }
 
-module.exports = {sendMail};
+module.exports = sendMail;

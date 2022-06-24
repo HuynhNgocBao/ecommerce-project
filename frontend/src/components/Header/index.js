@@ -1,6 +1,7 @@
 import styles from "./Header.module.scss";
 import classnames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import searchSvg from "src/assets/images/search.svg";
 import logoSvg from "src/assets/images/logo.svg";
 import cartSvg from "src/assets/images/cart.svg";
@@ -41,11 +42,14 @@ function Header() {
                 Log in
               </button>
             )}
-            {user && <span>{user.name}</span>}
+            {user && <div className={cx("avatar-dropdown")}>
+              <span className={cx("avatar")}>{user.name}</span>
+              <ul className={cx("dropdown-list")}>
+                <li className={cx("dropdown-item")}>Account setting</li>
+                <li className={cx("dropdown-item")} onClick={() => dispatch(logoutUser())}>Logout</li>
+              </ul>
+              </div>}
             <img src={cartSvg} alt="cart" className={cx("cart")} />
-            {user && (
-              <button onClick={() => dispatch(logoutUser())}>Logout</button>
-            )}
           </div>
         </div>
       </div>

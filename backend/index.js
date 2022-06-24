@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const cloudinary = require('cloudinary');
 const port = process.env.PORT || 5000;
 const route = require('./routes');
 const connectDB = require('./config/db');
@@ -14,6 +15,14 @@ connectDB();
 
 route(app);
 
+// cloudinary.config({ 
+//     cloud_name: process.env.CLOUD_NAME_CLOUDINARY, 
+//     api_key: process.env.API_KEY_CLOUDINARY, 
+//     api_secret: process.env.API_SECRET_CLOUDINARY 
+//   });
+//   cloudinary.v2.uploader.upload("./hoa.jpg",
+//   { public_id: "hoa" }, 
+//   function(error, result) {console.log(result); });
 app.listen(port, ()=>{
     console.log(`App is listening at port ${port}`);
 })

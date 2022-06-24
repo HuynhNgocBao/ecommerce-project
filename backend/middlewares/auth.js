@@ -1,4 +1,4 @@
-const {verifyToken} = require ('../services/jwt');
+const {verifyToken} = require ('../helpers/jwt');
 
 function protect(req,res,next){
     if (req.cookies.token){

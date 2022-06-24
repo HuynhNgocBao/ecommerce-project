@@ -1,16 +1,22 @@
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
-import Sidebar from './Sidebar';
+import Sidebar from 'src/components/Sidebar';
+import styles from './SidebarLayout.module.scss';
+import classnames from 'classnames/bind';
+
+const cx = classnames.bind(styles);
 
 function SidebarLayout({children}) {
-    return <div>
+    return <>
         <Header/>
-        <div>
-            <Sidebar/>
-            {children}
+        <div className={cx("wrapper")}>
+            <div className={cx("container")}>
+                <Sidebar/>
+                {children}
+            </div>
         </div>
         <Footer/>
-    </div>;
+    </>;
 }
 
 export default SidebarLayout;

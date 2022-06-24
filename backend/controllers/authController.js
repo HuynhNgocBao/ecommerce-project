@@ -1,10 +1,12 @@
-const bcrypt = require("bcrypt");
-const generatePassword = require('../services/generatePassword');
 const User = require("../models/User");
-const {generateToken} = require('../services/jwt');
-const {sendMail} = require('../services/mailgun');
-const addUser = require('../services/addUser');
-const changeUserPassword = require('../services/changeUserPassword');
+const { generateToken } = require("../helpers/jwt");
+const {
+  registerService,
+  loginService,
+  forgotPasswordService,
+  checkTokenService,
+  createNewPasswordService,
+} = require("../services/authService");
 
 async function register(req, res) {
   const { name, email, password } = req.body;
@@ -17,14 +19,7 @@ async function register(req, res) {
     res.status(404).send("User already exists");
     return;
   }
-  addUser(name,email,password);
-  const messageData = {
-    from: "baohuynhxayda@gmail.com",
-    to: email,
-    subject: "Register successfully",
-    text: "Register successfully"
-  }
-  sendMail(messageData);
+  registerService(name, email, password);
   res.status(200).send("register successfully");
 }
 
@@ -34,48 +29,58 @@ async function login(req, res) {
     res.status(404).send("Please add all fields");
     return;
   }
-  const user = await User.findOne({ email });
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const messageData = {
-      from: "baohuynhxayda@gmail.com",
-      to: email,
-      subject: "Login successfully",
-      text: "Login successfully"
-    }
-    sendMail(messageData);
-    res.cookie('token',generateToken(user._id)).status(200).send("Login successfully");
+  const user = await loginService(email, password);
+  if (user) {
+    res
+      .cookie("token", generateToken(user._id, "30d"))
+      .status(200)
+      .send("Login successfully");
   } else {
-    res.status(404).send("Your e-mail/password is invalid!");
+    res.status(400).send("Your e-mail/password is invalid!");
     return;
   }
 }
 
-async function forgotPassword(req,res){
-  const {email} = req.body; 
-  if (!email) {
-    res.status(404).send("Please add all fields");
-    return;
-  }
-  const user = await User.findOne({ email });
+async function forgotPassword(req, res) {
+  const { email } = req.body;
+  const user = await forgotPasswordService(email);
   if (user) {
-    const newPassword = generatePassword();
-    changeUserPassword(email, newPassword);
-    const messageData = {
-      from: "baohuynhxayda@gmail.com",
-      to: email,
-      subject: "Change password successfully",
-      text: `Your password has changed to ${newPassword}`
-    }
-    sendMail(messageData);
-    res.status(200).send("Success");
+    res.status(200).send("Send link forgotpassword to user successfully");
   } else {
     res.status(404).send("User not found");
-    return;
   }
 }
 
-async function logout(req,res){
+async function checkToken(req, res) {
+  const {token} = req.body;
+  const isTokenRight = await checkTokenService(token);
+  if (isTokenRight) {
+    res.status(200).send("Verify token successfully");
+  } else {
+    res.status(400).send("Token malformed");
+  }
+}
+
+async function createNewPassword(req, res) {
+  const { token, newpassword } = req.body;
+  const user = await createNewPasswordService(token, newpassword);
+  if (user){
+    res.status(200).send("Create new password successfully");
+  }
+  else{
+    res.status(400).send("User not found");
+  }
+}
+
+async function logout(req, res) {
   res.status(204).clearCookie("token").send("Logout successfully");
 }
 
-module.exports = { register, login, forgotPassword, logout };
+module.exports = {
+  register,
+  login,
+  forgotPassword,
+  checkToken,
+  createNewPassword,
+  logout,
+};
