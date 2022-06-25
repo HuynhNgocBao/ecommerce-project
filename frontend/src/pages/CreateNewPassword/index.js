@@ -2,11 +2,24 @@ import styles from "./CreateNewPassword.module.scss";
 import classnames from "classnames/bind";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { setError, clearError } from "src/features/auth/authSlice";
+import { useForm } from "react-hook-form";
+import FormGroup from "src/components/FormGroup";
+import Button from "src/components/Button";
 const cx = classnames.bind(styles);
 
 function CreateNewPassword() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    mode: "all",
+  });
+  const [successmsg, setSuccessmsg] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const search = location.search;
@@ -28,9 +41,18 @@ function CreateNewPassword() {
     });
   }, [token]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('/api/auth/createnewpassword', {token, ...formData});
+  const onSubmit = (e) => {
+    axios
+      .post("/api/auth/createnewpassword", { token, ...formData })
+      .then(() => {
+        dispatch(clearError());
+        setSuccessmsg(
+          "Your password has been changed successfully. Please log in again"
+        );
+      })
+      .catch((error) => {
+        dispatch(setError(error.response.data));
+      });
   };
 
   return (
@@ -43,22 +65,23 @@ function CreateNewPassword() {
       >
         <div className={cx("header")}>
           <span className={cx("title")}>Create new password</span>
+          <span className={cx("success")}>{successmsg}</span>
           <span className={cx("error", "error-header")}>{errormsg}</span>
         </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>NEW PASSWORD</label>
-          <input
-            name="newpassword"
-            className={cx("input")}
-            placeholder="Enter your new password..."
-            type="password"
-            value={formData.newpassword}
-            onChange={handleChange}
-          />
-        </div>
-        <button className={cx("submit")} onClick={handleSubmit}>
+        <FormGroup
+          label="NEW PASSWORD"
+          name="newpassword"
+          placeholder="Enter your new password..."
+          type="password"
+          value={formData.newpassword}
+          handleChange={handleChange}
+          errormsg="wrong"
+          register={register}
+          errors={errors}
+        />
+        <Button primary disabled={!isValid || !isDirty} className={cx("submit")} onClick={handleSubmit(onSubmit)}>
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   );

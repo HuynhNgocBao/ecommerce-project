@@ -3,16 +3,24 @@ import classnames from "classnames/bind";
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import crossSvg from "src/assets/images/cross.svg";
+import { CrossIcon } from "src/components/Icons";
 import { getUser } from "src/features/auth/authSlice";
 import { showModal, closeModal } from "src/features/modal/modalSlice";
 import { setError, clearError } from "src/features/auth/authSlice";
+import { useForm } from "react-hook-form";
+import FormGroup from "src/components/FormGroup";
+import Button from "src/components/Button";
 const cx = classnames.bind(styles);
 
 function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    mode: "all",
+  });
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
   const errormsg = useSelector((state) => state.auth.error);
 
   const [formData, setFormData] = useState({
@@ -26,8 +34,7 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (e) => {
     axios
       .post("/api/auth/login", formData)
       .then(() => {
@@ -53,38 +60,35 @@ function Login() {
           e.stopPropagation();
         }}
       >
-        <img
-          src={crossSvg}
+        <CrossIcon
           className={cx("close")}
           onClick={handleCloseModal}
-          alt="close"
         />
+
         <div className={cx("header")}>
           <span className={cx("title")}>Login</span>
           <span className={cx("error", "error-header")}>{errormsg}</span>
         </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>EMAIL</label>
-          <input
-            name="email"
-            className={cx("input")}
-            placeholder="Enter your email..."
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>PASSWORD</label>
-          <input
-            name="password"
-            className={cx("input")}
-            placeholder="Enter your password..."
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
+        <FormGroup
+          label="EMAIL"
+          name="email"
+          placeholder="Enter your email..."
+          type="email"
+          value={formData.email}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
+        <FormGroup
+          label="PASSWORD"
+          name="password"
+          placeholder="Enter your password..."
+          type="password"
+          value={formData.password}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
         <div className={cx("choice")}>
           <div className={cx("remember-password")}>
             <input type="checkbox" className={cx("check-box")} />
@@ -97,9 +101,9 @@ function Login() {
             Forgot your password?
           </span>
         </div>
-        <button className={cx("submit")} onClick={handleSubmit}>
+        <Button primary disabled={!isDirty ||!isValid} className={cx("submit")} onClick={handleSubmit(onSubmit)}>
           Log in
-        </button>
+        </Button>
         <div className={cx("footer")}>
           Don't you have an account?
           <span

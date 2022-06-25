@@ -1,14 +1,12 @@
-import styles from "./Header.module.scss";
+import styles from "./UserHeader.module.scss";
 import classnames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import searchSvg from "src/assets/images/search.svg";
-import logoSvg from "src/assets/images/logo.svg";
-import cartSvg from "src/assets/images/cart.svg";
+import { LogoIcon, CartIcon, SearchIcon } from "src/components/Icons";
 import Modal from "src/components/Modal";
 import { showModal } from "src/features/modal/modalSlice";
 import { logoutUser } from "src/features/auth/authSlice";
-import NavbarHeader from "./NavBarHeader";
+import NavbarUserHeader from "./NavBarUserHeader";
+import Button from "src/components/Button";
 
 const cx = classnames.bind(styles);
 
@@ -22,25 +20,26 @@ function Header() {
         <div className={cx("container")}>
           <div className={cx("search")}>
             <input className={cx("search-input")} placeholder="Search" />
-            <img src={searchSvg} alt="search" className={cx("search-icon")} />
+            <SearchIcon alt="search" className={cx("search-icon")} />
           </div>
-          <img src={logoSvg} alt="logo" className={cx("logo")} />
+          <LogoIcon alt="logo" className={cx("logo")} />
           <div className={cx("info")}>
             {!user && (
-              <button
-                className={cx("btn", "register-btn")}
+              <Button
+                className={cx("register-btn")}
                 onClick={() => dispatch(showModal("register"))}
               >
                 Register
-              </button>
+              </Button>
             )}
             {!user && (
-              <button
-                className={cx("btn", "login-btn")}
+              <Button
+                secondary
+                className={cx("login-btn")}
                 onClick={() => dispatch(showModal("login"))}
               >
                 Log in
-              </button>
+              </Button>
             )}
             {user && <div className={cx("avatar-dropdown")}>
               <span className={cx("avatar")}>{user.name}</span>
@@ -49,11 +48,11 @@ function Header() {
                 <li className={cx("dropdown-item")} onClick={() => dispatch(logoutUser())}>Logout</li>
               </ul>
               </div>}
-            <img src={cartSvg} alt="cart" className={cx("cart")} />
+            <CartIcon alt="cart" className={cx("cart")} />
           </div>
         </div>
       </div>
-      <NavbarHeader />
+      <NavbarUserHeader />
     </header>
   );
 }

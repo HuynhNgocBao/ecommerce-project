@@ -1,21 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import defaultLayout from "./layouts/DefaultLayout";
+import UserLayout from "./layouts/UserLayout";
 import { publicRoutes, privateRoutes } from "./routes";
-import {useEffect} from 'react';
-import { useDispatch } from "react-redux";
-import {getUser} from 'src/features/auth/authSlice'
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(getUser());
-  });
   return (
     <Router>
       <div className="App">
         <Routes>
           {publicRoutes.map((route, index) => {
-            let Layout = defaultLayout;
+            let Layout = UserLayout;
             if (route.layout) {
               Layout = route.layout;
             }

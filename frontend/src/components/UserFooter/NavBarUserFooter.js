@@ -1,8 +1,8 @@
-import styles from "./Footer.module.scss";
+import styles from "./UserFooter.module.scss";
 import classnames from "classnames/bind";
 const cx = classnames.bind(styles);
 
-function NavBarFooter() {
+function NavBarUserFooter() {
   return (
     <div className={cx("nav")}>
       <span className={cx("nav-item")}>Tops</span>
@@ -16,4 +16,4 @@ function NavBarFooter() {
   );
 }
 
-export default NavBarFooter;
+export default NavBarUserFooter;

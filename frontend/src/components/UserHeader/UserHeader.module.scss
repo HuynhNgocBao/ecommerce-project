@@ -62,23 +62,14 @@
 }
 
 .register-btn {
-  line-height: 1.57;
-  letter-spacing: normal;
   color: var(--greyish-brown);
-}
-
-.btn{
   margin-right: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .login-btn{
+  margin-right: 24px;
   padding: 10px 30px;
   border-radius: 100px;
-  border: solid 1px var(--pale-orange);
-  color: var(--pale-orange);
 }
 
 .nav {

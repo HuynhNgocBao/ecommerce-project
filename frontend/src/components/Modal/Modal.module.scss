@@ -47,34 +47,7 @@
   margin-bottom: 9px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  width: 395px;
-  &~.form-group{
-    margin-top: 24px;
-  }
-}
-
-.label {
-  font-size: 12px;
-  margin-bottom: 8px;
-  font-weight: bold;
-  line-height: 1.5;
-  color: var(--dark-grey);
-}
-
-.input {
-  width: 395px;
-  padding: 12px 24px;
-  background-color: var(--white-two);
-  border: 1px solid transparent;
-  &:focus, &:not(:placeholder-shown){
-    border-color: var(--greyish-two);
-  }
-}
-
-.error, .instruction {
+.error, .instruction, .success {
   font-size: 10px;
   font-weight: 500;
   font-stretch: normal;
@@ -83,12 +56,20 @@
   letter-spacing: normal;
 }
 
+.instruction, .success, .error-header{
+  text-align: center;
+}
+
 .error{
   color: var(--strawberry);
 }
 
-.error-header{
-  text-align: center;
+.instruction{
+  color: #808080
+}
+
+.success{
+  color: green;
 }
 
 .policy {
@@ -106,18 +87,9 @@
 .submit {
   width: 395px;
   margin-top: 35px;
-  padding: 12px 54.5px 14px 54.5px;
-  box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
-  background-color: var(--pale-orange);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 12px 54.5px;
   font-weight: bold;
   color: var(--white);
-  &:hover{
-    cursor: pointer;
-    opacity: 0.8;
-  }
 }
 
 .footer {

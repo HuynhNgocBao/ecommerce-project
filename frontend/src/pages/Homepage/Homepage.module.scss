@@ -61,12 +61,7 @@
   width: 140px;
   height: 40px;
   padding: 9px 29px;
-  background-color: var(--pale-orange);
   color: var(--white);
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
 }
 
 .outfit-of-the-week {
@@ -101,8 +96,4 @@
   box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
   background-color: var(--pale-orange);
   color: var(--white);
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
 }

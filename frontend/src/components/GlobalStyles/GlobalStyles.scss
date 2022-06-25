@@ -46,6 +46,13 @@ input {
   background-color: transparent;
 }
 
+button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 a {
   text-decoration: none;
 }

@@ -3,14 +3,25 @@ import classnames from "classnames/bind";
 import axios from "axios";
 import {useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import crossSvg from "src/assets/images/cross.svg";
+import {CrossIcon} from "src/components/Icons";
 import {showModal, closeModal} from 'src/features/modal/modalSlice';
 import { setError, clearError } from "src/features/auth/authSlice";
+import { useForm } from "react-hook-form";
+import FormGroup from "src/components/FormGroup";
+import Button from "src/components/Button";
 const cx = classnames.bind(styles);
 
 function ForgotPassword() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    mode: "all",
+  });
   const errormsg = useSelector(state=>state.auth.error);
   const dispatch = useDispatch();
+  const [successmsg, setSuccessmsg] = useState("");
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -21,12 +32,11 @@ function ForgotPassword() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (e) => {
     axios.post('/api/auth/forgotpassword', formData)
     .then(()=>{
       dispatch(clearError());
-      dispatch(closeModal());
+      setSuccessmsg("Please check your email to get reset password link");
     })
     .catch(err=>{
       dispatch(setError(err.response.data));
@@ -43,24 +53,24 @@ function ForgotPassword() {
       <form className={cx("container")} onClick={(e)=>{
         e.stopPropagation();
       }}>
-        <img src={crossSvg} className={cx("close")} onClick={handleCloseModal} alt="close" />
+        <CrossIcon className={cx("close")} onClick={handleCloseModal}/>
         <div className={cx('header')}>
           <span className={cx("title")}>Forgot Password</span>
           <span className={cx("instruction")}>Enter your e-mail address below and we’ll get you back on track.</span>
+          <span className={cx("success")}>{successmsg}</span>
           <span className={cx("error","error-header")}>{errormsg}</span>
         </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>EMAIL</label>
-          <input
-            name="email"
-            className={cx("input")}
-            placeholder="Enter your email..."
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <button className={cx("submit")} onClick={handleSubmit}>Submit</button>
+        <FormGroup
+          label="EMAIL"
+          name="email"
+          placeholder="Enter your email..."
+          type="email"
+          value={formData.email}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
+        <Button primary disabled={!isValid || !isDirty} className={cx("submit")} onClick={handleSubmit(onSubmit)}>Submit</Button>
         <div className={cx("footer")}>
         I remember my password now.
         <span className={cx("link")} onClick={()=>{

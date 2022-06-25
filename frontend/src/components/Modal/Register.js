@@ -4,13 +4,23 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import crossSvg from "src/assets/images/cross.svg";
-import {showModal, closeModal} from 'src/features/modal/modalSlice';
+import { CrossIcon } from "src/components/Icons";
+import { showModal, closeModal } from "src/features/modal/modalSlice";
 import { setError, clearError } from "src/features/auth/authSlice";
+import FormGroup from "src/components/FormGroup";
+import { useForm } from "react-hook-form";
+import Button from "src/components/Button";
 const cx = classnames.bind(styles);
 
 function Register() {
-  const errormsg = useSelector(state=>state.auth.error);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    mode: "all",
+  });
+  const errormsg = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
@@ -24,16 +34,16 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post("/api/auth/register", formData)
-    .then(()=>{
-      dispatch(clearError());
-      dispatch(closeModal());
-    })
-    .catch(err=>{
-      dispatch(setError(err.response.data));
-    });
+  const onSubmit = (e) => {
+    axios
+      .post("/api/auth/register", formData)
+      .then(() => {
+        dispatch(clearError());
+        dispatch(closeModal());
+      })
+      .catch((err) => {
+        dispatch(setError(err.response.data));
+      });
   };
 
   const handleCloseModal = (e) => {
@@ -43,50 +53,52 @@ function Register() {
 
   return (
     <div className={cx("wrapper")} onClick={handleCloseModal}>
-      <form className={cx("container")} onClick={(e)=>{
-        e.stopPropagation();
-      }}>
-      <img src={crossSvg} className={cx("close")} onClick={handleCloseModal} alt="close" />
+      <form
+        className={cx("container")}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <CrossIcon
+          className={cx("close")}
+          onClick={handleCloseModal}
+        />
+        
         <div className={cx("header")}>
           <span className={cx("title")}>Register</span>
-          <span className={cx("error","error-header")}>{errormsg}</span>
+          <span className={cx("error", "error-header")}>{errormsg}</span>
         </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>NAME</label>
-          <input
-            name="name"
-            className={cx("input")}
-            placeholder="Enter your name..."
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <span className={cx("error")}></span>
-        </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>EMAIL</label>
-          <input
-            name="email"
-            className={cx("input")}
-            placeholder="Enter your email..."
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <span className={cx("error")}></span>
-        </div>
-        <div className={cx("form-group")}>
-          <label className={cx("label")}>PASSWORD</label>
-          <input
-            name="password"
-            className={cx("input")}
-            placeholder="Enter your password..."
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <span className={cx("error")}></span>
-        </div>
+
+        <FormGroup
+          label="NAME"
+          name="name"
+          placeholder="Enter your name..."
+          type="text"
+          value={formData.name}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
+        <FormGroup
+          label="EMAIL"
+          name="email"
+          placeholder="Enter your email..."
+          type="email"
+          value={formData.email}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
+        <FormGroup
+          label="PASSWORD"
+          name="password"
+          placeholder="Enter your password..."
+          type="password"
+          value={formData.password}
+          handleChange={handleChange}
+          register={register}
+          errors = {errors}
+        />
         <span className={cx("policy")}>
           By creating an account you agree to the{" "}
           <Link className={cx("link")} to="/">
@@ -97,15 +109,18 @@ function Register() {
             Privacy Policy
           </Link>
         </span>
-        <button className={cx("submit")} onClick={handleSubmit}>
+        <Button primary disabled={!isDirty || !isValid} className={cx("submit")} onClick={handleSubmit(onSubmit)}>
           Register
-        </button>
+        </Button>
         <div className={cx("footer")}>
           Do you have an account?{" "}
-          <span className={cx("link")} onClick={()=>{
-            dispatch(showModal("login"));
-            dispatch(clearError());
-          }}>
+          <span
+            className={cx("link")}
+            onClick={() => {
+              dispatch(showModal("login"));
+              dispatch(clearError());
+            }}
+          >
             Log in
           </span>
         </div>

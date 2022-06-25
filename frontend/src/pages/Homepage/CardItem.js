@@ -1,5 +1,6 @@
 import styles from "./Homepage.module.scss";
 import classnames from "classnames/bind";
+import Button from "src/components/Button";
 
 const cx = classnames.bind(styles);
 
@@ -10,7 +11,7 @@ function CardItem({title, image}) {
       style={{backgroundImage: `url(${image})`}}
       >
         <span className={cx("title")}>{title}</span>
-        <button className={cx("shopnow-btn")}>Shop now</button>
+        <Button primary className={cx("shopnow-btn")}>Shop now</Button>
       </div>
     </div>
   );

@@ -38,7 +38,6 @@ async function loginService(email, password) {
 
 async function forgotPasswordService(email) {
   const user = await User.findOne({ email });
-  console.log(user);
   if (user) {
     const token = generateToken(user._id, "10m");
     const messageData = {

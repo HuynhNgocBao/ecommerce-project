@@ -3,15 +3,17 @@ import axios from 'axios';
 
 export const getUser = createAsyncThunk('api/getUser', async()=>{
     const response = await axios.get('/api/user').catch(err=>{throw err.response.data});
+    localStorage.setItem("user",JSON.stringify(response.data));
     return response.data;
 });
 
 export const logoutUser = createAsyncThunk('api/logoutUser', async()=>{
     await axios.post('/api/auth/logout').catch(err=>{throw err.response.data});
+    localStorage.removeItem("user");
 })
 
 const initialState = {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     isLoading: true,
     error: "",
 };
