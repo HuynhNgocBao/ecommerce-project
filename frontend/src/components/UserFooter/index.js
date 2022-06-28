@@ -7,7 +7,7 @@ import {
   TwitterIcon,
   LogoIcon,
 } from "src/components/Icons";
-import NavbarUserFooter from "./NavBarUserFooter";
+import NavUserFooter from "./NavUserFooter";
 
 const cx = classnames.bind(styles);
 
@@ -17,7 +17,7 @@ function Footer() {
       <div className={cx("top")}>
         <div className={cx("container")}>
           <LogoIcon alt="logo" className={cx("logo")} />
-          <NavbarUserFooter />
+          <NavUserFooter />
           <div className={cx("media")}>
             <TwitterIcon className={cx("media-icon")} />
             <FacebookIcon className={cx("media-icon")} />
@@ -27,7 +27,7 @@ function Footer() {
       </div>
       <div className={cx("bottom")}>
         <div className={cx("container")}>
-          <NavbarUserFooter />
+          <NavUserFooter />
           <div className={cx("policy")}>
             <Link to="/" className={cx("policy-item")}>
               Privacy Policy

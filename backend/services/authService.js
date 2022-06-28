@@ -4,25 +4,31 @@ const bcrypt = require("bcrypt");
 const { generateToken, verifyToken } = require("../helpers/jwt");
 
 async function registerService(name, email, password) {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  await User.create({
-    name,
-    email,
-    password: hashedPassword,
-  });
-  const messageData = {
-    from: "baohuynhxayda@gmail.com",
-    to: email,
-    subject: "Register successfully",
-    text: "Register successfully",
-  };
-  sendMail(messageData);
+  const userExists = await User.findOne({ email });
+  if (!userExists) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    const messageData = {
+      from: "baohuynhxayda@gmail.com",
+      to: email,
+      subject: "Register successfully",
+      text: "Register successfully",
+    };
+    sendMail(messageData);
+    return true;
+  }
+  else return false;
 }
 
 async function loginService(email, password) {
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
+    const token = generateToken(user._id, "30d");
     const messageData = {
       from: "baohuynhxayda@gmail.com",
       to: email,
@@ -30,9 +36,9 @@ async function loginService(email, password) {
       text: "Login successfully",
     };
     sendMail(messageData);
-    return user;
+    return token;
   } else {
-    return undefined;
+    return null;
   }
 }
 
@@ -65,10 +71,9 @@ async function createNewPasswordService(token, newpassword) {
   if (user) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newpassword, salt);
-    await User.findByIdAndUpdate(decoded.id, {password: hashedPassword});
+    await User.findByIdAndUpdate(decoded.id, { password: hashedPassword });
     return user;
-  }
-  else{
+  } else {
     return null;
   }
 }

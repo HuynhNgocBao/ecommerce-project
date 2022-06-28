@@ -3,11 +3,12 @@ import classnames from "classnames/bind";
 
 const cx = classnames.bind(styles);
 
-function Button({ children, className, primary = false,secondary=false, disabled = false, onClick, ...passProps }) {
+function Button({ children, className, primary = false,secondary=false,third=false, disabled = false, onClick, ...passProps }) {
   const classes = cx({
     [className]: className,
     primary,
     secondary,
+    third,
     disabled,
   });
   const props = {

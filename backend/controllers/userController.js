@@ -1,7 +1,8 @@
-const User = require('../models/User');
+const {getUserService} = require("../services/userService");
 
 async function getUser(req,res){
-    const user = await User.findById(req.auth).select("name email");
+    const id = req.auth;
+    const user = await getUserService(id);
     if (user){
         res.status(200).json({
             name: user.name,

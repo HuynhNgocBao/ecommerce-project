@@ -3,7 +3,7 @@ import classnames from "classnames/bind";
 import NavItemUserHeader from "./NavItemUserHeader";
 const cx = classnames.bind(styles);
 
-function NavBarUserHeader() {
+function NavUserHeader() {
   return (
     <nav className={cx("nav")}>
       <div className={cx("nav-list")}>
@@ -16,4 +16,4 @@ function NavBarUserHeader() {
   );
 }
 
-export default NavBarUserHeader;
+export default NavUserHeader;

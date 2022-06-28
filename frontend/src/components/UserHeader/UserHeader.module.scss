@@ -108,6 +108,10 @@
   display: flex;
 }
 
+.nav-item:hover .arrow-down{
+  transform: rotate(180deg);
+}
+
 .subnav {
   position: absolute;
   display: none;

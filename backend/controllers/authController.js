@@ -1,5 +1,3 @@
-const User = require("../models/User");
-const { generateToken } = require("../helpers/jwt");
 const {
   registerService,
   loginService,
@@ -14,12 +12,11 @@ async function register(req, res) {
     res.status(404).send("Please add all fields");
     return;
   }
-  const userExists = await User.findOne({ email });
-  if (userExists) {
+  const isUserExists = registerService(name, email, password);
+  if (isUserExists) {
     res.status(404).send("User already exists");
     return;
   }
-  registerService(name, email, password);
   res.status(200).send("register successfully");
 }
 
@@ -29,10 +26,10 @@ async function login(req, res) {
     res.status(404).send("Please add all fields");
     return;
   }
-  const user = await loginService(email, password);
-  if (user) {
+  const token = await loginService(email, password);
+  if (token) {
     res
-      .cookie("token", generateToken(user._id, "30d"))
+      .cookie("token", token)
       .status(200)
       .send("Login successfully");
   } else {

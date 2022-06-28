@@ -1,6 +1,7 @@
 .primary {
   box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
   background-color: var(--pale-orange);
+  color: var(--white);
   &:hover {
     opacity: 0.8;
   }
@@ -12,9 +13,19 @@
   color: var(--pale-orange);
 }
 
+.third{
+  box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
+  background-color: #5f6dff;
+  color: var(--white);
+  font-weight: 600;
+}
+
 .disabled {
   cursor: not-allowed;
   background-color: var(--white);
   color: var(--pale-orange);
-  border: 1px solid var(--pale-orange);
+  border: 1px solid currentColor;
+  &:hover{
+    opacity: 1;
+  }
 }
