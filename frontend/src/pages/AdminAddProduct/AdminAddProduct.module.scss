@@ -6,11 +6,12 @@
   width: 1000px;
 }
 
-.item {
+.field {
   display: flex;
+  margin-bottom: 24px;
 }
 
-.title {
+.field-title {
   width: 200px;
   display: flex;
   justify-content: flex-end;
@@ -32,7 +33,7 @@
   width: 780px;
 }
 
-.no-img {
+.photo-input {
   width: 180px;
   height: 270px;
   display: flex;
@@ -43,14 +44,14 @@
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-.add {
+.photo-input-add {
   color: var(--white);
   background-color: var(--greyish-two);
   border-radius: 50%;
   padding: 2px;
 }
 
-.no-img-title {
+.photo-input-title {
   margin-top: 8px;
   font-size: 12px;
   font-weight: 600;
@@ -61,15 +62,103 @@
   color: var(--greyish);
 }
 
-.no-img-container {
-  text-align: center;
+.photo-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
-.no-img-input{
-    display: none;
+.photo-input-body {
+  display: none;
 }
 
-.img-preview{
-    width: 100%;
-    object-fit: cover;
+.photo-input-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 8px;
+  color: var(--brown-grey);
+}
+
+.input-dropdown {
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+}
+
+.input-dropdown-header {
+  min-height: 48px;
+  position: relative;
+  padding: 5px 15px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 2px;
+  border: solid 1px var(--white-three);
+}
+
+.input-dropdown-result{
+  padding: 6px 8px;
+  border-radius: 4px;
+  background-color: var(--white-two);
+  margin-right: 16px;
+}
+
+.input-dropdown-list {
+  width: 100%;
+  position: absolute;
+  transform: translateY(100%);
+  bottom: -10px;
+  z-index: 20;
+  background-color: var(--white);
+}
+
+.input-dropdown-item {
+  padding: 7px 13px;
+  box-shadow: 0 14px 30px 0 rgba(0, 0, 0, 0.14);
+  border: solid 0.5px var(--white-six);
+  background-color: var(--white-five);
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.83;
+  letter-spacing: normal;
+  color: var(--greyish-brown);
+  &:hover{
+    background-color: var(--white-six);
+    cursor: pointer;
+  }
+}
+
+.input-dropdown-icon {
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px;
+}
+
+.up{
+    transform: rotate(180deg);
+}
+
+.input-dropdown-result-delete{
+  color: var(--white);
+  margin: 8px;
+  font-size: 8px;
+  padding: 6px;
+  background-color: var(--greyish-two);
+  border-radius: 50%;
 }

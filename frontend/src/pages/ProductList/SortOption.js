@@ -16,7 +16,7 @@ function SortOption() {
     <div className={cx("sort")}>
       <div
         className={cx("sort-header")}
-        onClick={(e) => {
+        onClick={() => {
           setShowSortList((prev) => !prev);
           setArrowUp(prev=>!prev);
         }}
