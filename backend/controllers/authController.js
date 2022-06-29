@@ -1,5 +1,6 @@
 const {
   registerService,
+  verifyAccountService,
   loginService,
   forgotPasswordService,
   checkTokenService,
@@ -12,12 +13,26 @@ async function register(req, res) {
     res.status(404).send("Please add all fields");
     return;
   }
-  const isUserExists = registerService(name, email, password);
-  if (isUserExists) {
-    res.status(404).send("User already exists");
+  const isRegisterSuccess = registerService(name, email, password);
+  if (isRegisterSuccess) {
+    res.status(200).send("Register successfully");
     return;
   }
-  res.status(200).send("register successfully");
+  res.status(404).send("User already exists");
+}
+
+async function verifyAccount(req, res) {
+  const { token } = req.body;
+  if (!token) {
+    res.status(404).send("Please add all fields");
+    return;
+  }
+  const isVerifySuccess = await verifyAccountService(token);
+  if (isVerifySuccess) {
+    res.status(200).send("Verify account successfully");
+  } else {
+    res.status(400).send("Something wrong");
+  }
 }
 
 async function login(req, res) {
@@ -26,14 +41,11 @@ async function login(req, res) {
     res.status(404).send("Please add all fields");
     return;
   }
-  const token = await loginService(email, password);
+  const [token, errormsg] = await loginService(email, password);
   if (token) {
-    res
-      .cookie("token", token)
-      .status(200)
-      .send("Login successfully");
+    res.cookie("token", token).status(200).send("Login successfully");
   } else {
-    res.status(400).send("Your e-mail/password is invalid!");
+    res.status(400).send(errormsg);
     return;
   }
 }
@@ -53,7 +65,7 @@ async function forgotPassword(req, res) {
 }
 
 async function checkToken(req, res) {
-  const {token} = req.body;
+  const { token } = req.body;
   if (!token) {
     res.status(404).send("Please add all fields");
     return;
@@ -73,10 +85,9 @@ async function createNewPassword(req, res) {
     return;
   }
   const user = await createNewPasswordService(token, newpassword);
-  if (user){
+  if (user) {
     res.status(200).send("Create new password successfully");
-  }
-  else{
+  } else {
     res.status(400).send("User not found");
   }
 }
@@ -88,6 +99,7 @@ async function logout(req, res) {
 module.exports = {
   register,
   login,
+  verifyAccount,
   forgotPassword,
   checkToken,
   createNewPassword,

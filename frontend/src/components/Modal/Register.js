@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CrossIcon } from "src/components/Icons";
 import { showModal, closeModal } from "src/features/modal/modalSlice";
 import { setError, clearError } from "src/features/auth/authSlice";
 import FormGroup from "src/components/FormGroup";
@@ -20,6 +19,7 @@ function Register() {
   } = useForm({
     mode: "all",
   });
+  const [successmsg, setSuccessmsg] = useState("");
   const errormsg = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ function Register() {
       .post("/api/auth/register", formData)
       .then(() => {
         dispatch(clearError());
-        dispatch(closeModal());
+        setSuccessmsg("Please check your email to verify your account");
       })
       .catch((err) => {
         dispatch(setError(err.response.data));
@@ -59,14 +59,15 @@ function Register() {
           e.stopPropagation();
         }}
       >
-        <CrossIcon
-          className={cx("close")}
+        <i
+          className={cx("close", "icon-cross")}
           onClick={handleCloseModal}
         />
         
         <div className={cx("header")}>
           <span className={cx("title")}>Register</span>
           <span className={cx("error", "error-header")}>{errormsg}</span>
+          <span className={cx("success")}>{successmsg}</span>
         </div>
 
         <FormGroup

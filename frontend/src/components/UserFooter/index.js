@@ -1,12 +1,7 @@
 import styles from "./UserFooter.module.scss";
 import classnames from "classnames/bind";
 import { Link } from "react-router-dom";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TwitterIcon,
-  LogoIcon,
-} from "src/components/Icons";
+import Logo from "src/assets/images/logo.png"
 import NavUserFooter from "./NavUserFooter";
 
 const cx = classnames.bind(styles);
@@ -16,12 +11,12 @@ function Footer() {
     <footer className={cx("wrapper")}>
       <div className={cx("top")}>
         <div className={cx("container")}>
-          <LogoIcon alt="logo" className={cx("logo")} />
+          <img src={Logo} className={cx("logo")} />
           <NavUserFooter />
           <div className={cx("media")}>
-            <TwitterIcon className={cx("media-icon")} />
-            <FacebookIcon className={cx("media-icon")} />
-            <InstagramIcon className={cx("media-icon")} />
+            <i className={cx("media-icon", "icon-twitter")} />
+            <i className={cx("media-icon", "icon-facebook")} />
+            <i className={cx("media-icon", "icon-instagram")} />
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import classnames from "classnames/bind";
 import axios from "axios";
 import {useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import {CrossIcon} from "src/components/Icons";
 import {showModal, closeModal} from 'src/features/modal/modalSlice';
 import { setError, clearError } from "src/features/auth/authSlice";
 import { useForm } from "react-hook-form";
@@ -53,7 +52,7 @@ function ForgotPassword() {
       <form className={cx("container")} onClick={(e)=>{
         e.stopPropagation();
       }}>
-        <CrossIcon className={cx("close")} onClick={handleCloseModal}/>
+        <i className={cx("close", "icon-cross")} onClick={handleCloseModal}/>
         <div className={cx('header')}>
           <span className={cx("title")}>Forgot Password</span>
           <span className={cx("instruction")}>Enter your e-mail address below and we’ll get you back on track.</span>

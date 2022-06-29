@@ -1,6 +1,6 @@
 import styles from "./UserHeader.module.scss";
 import classnames from "classnames/bind";
-import { ArrowIcon } from "src/components/Icons";
+import { Link } from "react-router-dom";
 
 const cx = classnames.bind(styles);
 
@@ -8,15 +8,50 @@ function NavItemUserHeader({ title }) {
   return (
     <div className={cx("nav-item")}>
       <span className={cx("title")}>{title}</span>
-      <ArrowIcon className={cx("arrow-down")} />
+      <i className={cx("arrow", "icon-arrow")} />
       <div className={cx("subnav")}>
-        <span className={cx("subnav-item")}>Tops</span>
-        <span className={cx("subnav-item")}>Bottoms</span>
-        <span className={cx("subnav-item")}>Dresses</span>
-        <span className={cx("subnav-item")}>Jackets</span>
-        <span className={cx("subnav-item")}>Shoes</span>
-        <span className={cx("subnav-item")}>Accessories</span>
-        <span className={cx("subnav-item")}>Sale</span>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Tops`}
+          className={cx("subnav-item")}
+        >
+          Tops
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Bottoms`}
+          className={cx("subnav-item")}
+        >
+          Bottoms
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Dresses`}
+          className={cx("subnav-item")}
+        >
+          Dresses
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Jackets`}
+          className={cx("subnav-item")}
+        >
+          Jackets
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Shoes`}
+          className={cx("subnav-item")}
+        >
+          Shoes
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Accessories`}
+          className={cx("subnav-item")}
+        >
+          Accessories
+        </Link>
+        <Link
+          to={`/productlist?genderTypeFilter=${title}&clothesType=Sale`}
+          className={cx("subnav-item")}
+        >
+          Sale
+        </Link>
       </div>
     </div>
   );

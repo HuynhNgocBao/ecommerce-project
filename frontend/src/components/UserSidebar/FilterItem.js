@@ -1,13 +1,12 @@
 import styles from "./Sidebar.module.scss";
 import classnames from "classnames/bind";
 import { useState } from "react";
-import { ArrowIcon } from "src/components/Icons";
 const cx = classnames.bind(styles);
 
 function FilterItem({ children, name}) {
   const [showSubfilter, setShowSubfilter] = useState(false);
   return (
-    <li className={cx("filter-item")}>
+    <div className={cx("filter-item")}>
       <div
         className={cx("filter-item-header")}
         onClick={(e) => {
@@ -15,11 +14,11 @@ function FilterItem({ children, name}) {
           e.currentTarget.classList.toggle(cx("up"));
         }}
       >
-        <span className={cx("filter-name")}>{name}</span>
-        <ArrowIcon className={cx("filter-item-icon")} />
+        <span className={cx("filter-item-name")}>{name}</span>
+        <i className={cx("filter-item-icon", "icon-arrow")} />
       </div>
-      {showSubfilter && <div className={cx("filter-body")}>{children}</div>}
-    </li>
+      {showSubfilter && <div className={cx("filter-item-body")}>{children}</div>}
+    </div>
   );
 }
 

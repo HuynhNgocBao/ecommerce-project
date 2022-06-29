@@ -3,7 +3,6 @@ import classnames from "classnames/bind";
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CrossIcon } from "src/components/Icons";
 import { getUser } from "src/features/auth/authSlice";
 import { showModal, closeModal } from "src/features/modal/modalSlice";
 import { setError, clearError } from "src/features/auth/authSlice";
@@ -60,8 +59,8 @@ function Login() {
           e.stopPropagation();
         }}
       >
-        <CrossIcon
-          className={cx("close")}
+        <i
+          className={cx("close","icon-cross")}
           onClick={handleCloseModal}
         />
 

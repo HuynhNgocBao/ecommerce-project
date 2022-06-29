@@ -1,10 +1,15 @@
 const authRouter = require('./auth');
 const userRouter = require('./user');
+const productRouter = require('./product');
 const {protect} = require('../middlewares/auth');
 
 function route(app){
+    app.post('/api/test', (req,res)=>{
+        console.log(req.body, req.files);
+    })
     app.use('/api/auth', authRouter);
     app.use('/api/user', protect, userRouter);
+    app.use('/api/product', productRouter);
 }
 
 module.exports = route;

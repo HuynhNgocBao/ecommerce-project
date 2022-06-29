@@ -94,16 +94,14 @@
 .quantity-choice {
   border: solid 1px var(--white-four);
   display: flex;
+  height: 42px;
+  width: 108px;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .quantity-title {
   margin-right: 21px;
-}
-
-.decrease,
-.quantity,
-.increase {
-  padding: 9px 12px;
 }
 
 .add-to-cart {

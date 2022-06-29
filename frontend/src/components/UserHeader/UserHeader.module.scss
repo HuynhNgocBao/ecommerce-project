@@ -40,25 +40,18 @@
 }
 
 .search-icon {
+  font-size: 20px;
   position: absolute;
   top: 6px;
   right: 12px;
-  width: 24px;
-  height: 24px;
-  padding: 2px;
   object-fit: contain;
   opacity: 0.6;
 }
 
-.logo {
-  width: 96px;
-  height: 20px;
-  padding: 0.3px 0.2px 0.4px 0.5px;
-  object-fit: contain;
-}
-
 .info {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .register-btn {
@@ -108,7 +101,12 @@
   display: flex;
 }
 
-.nav-item:hover .arrow-down{
+.arrow{
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.nav-item:hover .arrow{
   transform: rotate(180deg);
 }
 
@@ -127,6 +125,7 @@
 
 .subnav-item{
   padding: 18px 19px;
+  color: var(--dark-grey);
 }
 
 .avatar-dropdown{

@@ -1,7 +1,6 @@
 import styles from "./Sidebar.module.scss";
 import classnames from "classnames/bind";
 import { useState, useEffect } from "react";
-import { ArrowIcon } from "src/components/Icons";
 const cx = classnames.bind(styles);
 
 function PriceItem() {

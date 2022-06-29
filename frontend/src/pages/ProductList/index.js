@@ -3,7 +3,6 @@ import classnames from "classnames/bind";
 import UserSidebar from "src/components/UserSidebar";
 import ProductItem from "./ProductItem";
 import SortOption from "./SortOption";
-import { ArrowIcon } from "src/components/Icons";
 
 const cx = classnames.bind(styles);
 
@@ -17,9 +16,9 @@ function ProductList() {
           <div className={cx("product","col-10")}>
             <SortOption/>
             <div className={cx("page")}>
-                <ArrowIcon className={cx("arrow-left")}/>
+                <i className={cx("arrow-left", "icon-arrow")}/>
                 <span className={cx("page-number")}>1/100</span>
-                <ArrowIcon className={cx("arrow-right")}/>
+                <i className={cx("arrow-right", "icon-arrow")}/>
             </div>
             <div className={cx("product-list", "row")}>
               <ProductItem />

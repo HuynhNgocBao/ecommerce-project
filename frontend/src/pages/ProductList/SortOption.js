@@ -1,7 +1,6 @@
 import styles from "./ProductList.module.scss";
 import classnames from "classnames/bind";
 import { useState } from "react";
-import { ArrowIcon } from "src/components/Icons";
 const cx = classnames.bind(styles);
 
 function SortOption() {
@@ -24,7 +23,7 @@ function SortOption() {
       >
         <span className={cx("sort-name")}>Sort By: </span>
         <span className={cx("sort-type")}>{sortType}</span>
-        <ArrowIcon className={cx("sort-icon",{"up":arrowUp})} />
+        <i className={cx("sort-icon","icon-arrow",{"up":arrowUp})} />
       </div>
       {showSortList && (
         <ul className={cx("sort-list")}>

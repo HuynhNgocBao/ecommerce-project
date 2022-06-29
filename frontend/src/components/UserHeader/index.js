@@ -2,7 +2,7 @@ import styles from "./UserHeader.module.scss";
 import classnames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { LogoIcon, CartIcon, SearchIcon } from "src/components/Icons";
+import Logo from "src/assets/images/logo.png";
 import Modal from "src/components/Modal";
 import { showModal } from "src/features/modal/modalSlice";
 import { logoutUser } from "src/features/auth/authSlice";
@@ -21,9 +21,9 @@ function Header() {
         <div className={cx("container")}>
           <div className={cx("search")}>
             <input className={cx("search-input")} placeholder="Search" />
-            <SearchIcon alt="search" className={cx("search-icon")} />
+            <i className={cx("search-icon", "icon-search")} />
           </div>
-          <Link to="/"><LogoIcon alt="logo" className={cx("logo")} /></Link>
+          <Link to="/"><img src={Logo} alt="logo" className={cx("logo")} /></Link>
           <div className={cx("info")}>
             {!user && (
               <Button
@@ -49,7 +49,7 @@ function Header() {
                 <li className={cx("dropdown-item")} onClick={() => dispatch(logoutUser())}>Logout</li>
               </ul>
               </div>}
-            <CartIcon alt="cart" className={cx("cart")} />
+            <i className={cx("cart", "icon-cart")} />
           </div>
         </div>
       </div>

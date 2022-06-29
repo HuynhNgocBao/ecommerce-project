@@ -12,33 +12,57 @@ async function registerService(name, email, password) {
       name,
       email,
       password: hashedPassword,
+      isVerified: false,
     });
+    const user = await User.findOne({ email });
+    const token = generateToken(user._id, "30d");
     const messageData = {
-      from: "baohuynhxayda@gmail.com",
+      from: "No reply <baohuynhxayda@gmail.com>",
       to: email,
-      subject: "Register successfully",
-      text: "Register successfully",
+      subject: "Verify account",
+      text: `Please go to http://localhost:3000/verifyaccount?token=${token} to verify your account`,
     };
     sendMail(messageData);
     return true;
+  } else return false;
+}
+
+async function verifyAccountService(token) {
+  const decoded = verifyToken(token);
+  const user = await User.findByIdAndUpdate(decoded.id, { isVerified: true });
+  if (user) {
+    return user;
+  } else {
+    return null;
   }
-  else return false;
 }
 
 async function loginService(email, password) {
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
     const token = generateToken(user._id, "30d");
-    const messageData = {
-      from: "baohuynhxayda@gmail.com",
-      to: email,
-      subject: "Login successfully",
-      text: "Login successfully",
-    };
-    sendMail(messageData);
-    return token;
+    let messageData;
+    if (user.isVerified === false) {
+      messageData = {
+        from: "No reply <baohuynhxayda@gmail.com>",
+        to: email,
+        subject: "Verify account",
+        text: `Please go to http://localhost:3000/verifyaccount?token=${token} to verify your account`,
+      };
+      sendMail(messageData);
+      return [null, "Please check your email to verify your account"];
+    } else {
+      messageData = {
+        from: "No reply <baohuynhxayda@gmail.com>",
+        to: email,
+        subject: "Login successfully",
+        text: "Login successfully",
+      };
+      sendMail(messageData);
+      return [token, null];
+    }
   } else {
-    return null;
+    return [null, "Your email/password is invalid"];
   }
 }
 
@@ -47,7 +71,7 @@ async function forgotPasswordService(email) {
   if (user) {
     const token = generateToken(user._id, "10m");
     const messageData = {
-      from: "baohuynhxayda@gmail.com",
+      from: "No reply <baohuynhxayda@gmail.com>",
       to: email,
       subject: "Change password",
       text: `Please go to http://localhost:3000/createnewpassword?token=${token} to change your password`,
@@ -84,4 +108,5 @@ module.exports = {
   forgotPasswordService,
   checkTokenService,
   createNewPasswordService,
+  verifyAccountService,
 };
