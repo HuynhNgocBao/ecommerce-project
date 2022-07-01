@@ -3,9 +3,9 @@ import classnames from "classnames/bind";
 
 const cx = classnames.bind(styles);
 
-function Field({title, children}) {
+function FieldWrapper({title, children}) {
   return (
-    <div className={cx("field")}>
+    <div className={cx("field-wrapper")}>
       <div className={cx("field-title")}>{title}</div>
       <div className={cx("input-wrapper")}>
         {children}
@@ -14,4 +14,4 @@ function Field({title, children}) {
   );
 }
 
-export default Field;
+export default FieldWrapper;

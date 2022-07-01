@@ -4,9 +4,11 @@
 
 .container {
   width: 1000px;
+  display: flex;
+  flex-direction: column;
 }
 
-.field {
+.field-wrapper {
   display: flex;
   margin-bottom: 24px;
 }
@@ -90,13 +92,13 @@
   color: var(--brown-grey);
 }
 
-.input-dropdown {
+.dropdown {
   position: relative;
   width: 100%;
   background-color: var(--white);
 }
 
-.input-dropdown-header {
+.dropdown-header, .field-input {
   min-height: 48px;
   position: relative;
   padding: 5px 15px;
@@ -108,14 +110,19 @@
   border: solid 1px var(--white-three);
 }
 
-.input-dropdown-result{
+.field-input{
+  width: 100%;
+  background-color: var(--white);
+}
+
+.dropdown-result{
   padding: 6px 8px;
   border-radius: 4px;
   background-color: var(--white-two);
   margin-right: 16px;
 }
 
-.input-dropdown-list {
+.dropdown-list {
   width: 100%;
   position: absolute;
   transform: translateY(100%);
@@ -124,7 +131,7 @@
   background-color: var(--white);
 }
 
-.input-dropdown-item {
+.dropdown-item {
   padding: 7px 13px;
   box-shadow: 0 14px 30px 0 rgba(0, 0, 0, 0.14);
   border: solid 0.5px var(--white-six);
@@ -142,7 +149,7 @@
   }
 }
 
-.input-dropdown-icon {
+.dropdown-icon {
   font-size: 12px;
   position: absolute;
   top: 50%;
@@ -154,11 +161,24 @@
     transform: rotate(180deg);
 }
 
-.input-dropdown-result-delete{
+.dropdown-result-delete{
   color: var(--white);
   margin: 8px;
   font-size: 8px;
   padding: 6px;
   background-color: var(--greyish-two);
   border-radius: 50%;
+}
+
+.submit{
+  align-self: flex-end;
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 74px;
+}
+
+.form-button{
+  padding: 12px 55px;
+  border-radius: 0;
+  margin-left: 20px;
 }

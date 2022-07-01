@@ -1,11 +1,11 @@
 import styles from "./AdminAddProduct.module.scss";
 import classnames from "classnames/bind";
 import { useState } from "react";
-
 const cx = classnames.bind(styles);
 
-const PhotoInput = ({ handleChange = (e)=>{}}) => {
+const PhotoInput = ({onUpdate}) => {
   const [imgSrc, setImgSrc] = useState("");
+  const [file, setFile] = useState(null);
   return (
     <label className={cx("photo-input")}>
       <div className={cx("photo-input-container")}>
@@ -14,6 +14,8 @@ const PhotoInput = ({ handleChange = (e)=>{}}) => {
             className={cx("icon-cross", "close")}
             onClick={(e) => {
               e.preventDefault();
+              onUpdate(prev=>prev.filter(value=>value!==file));
+              setFile(null);
               setImgSrc("");
             }}
           />
@@ -32,8 +34,12 @@ const PhotoInput = ({ handleChange = (e)=>{}}) => {
           type="file"
           accept="image/png, image/gif, image/jpeg"
           onChange={(e) => {
+            setFile(e.target.files[0]);
             setImgSrc(URL.createObjectURL(e.target.files[0]));
-            handleChange(e);
+            onUpdate(prev=>[...prev,e.target.files[0]]);
+          }}
+          onClick = {(e)=>{
+            e.target.value = null;
           }}
         />
       </div>

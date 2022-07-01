@@ -8,15 +8,6 @@ import axios from "axios";
 const cx = classnames.bind(styles);
 
 function ProductInfo() {
-  // const [img, setImg] = useState("");
-  // useEffect(() => {
-  //   if (img==="") return;
-  //   const formData = new FormData();
-  //   formData.append("file", img);
-  //   formData.append('upload_preset', 'abcdef');
-  //   formData.append('public_id', "a");
-  //   axios.post("https://api.cloudinary.com/v1_1/dizrot0bq/image/upload", formData).catch(e=>console.log(e));
-  // });
   return (
     <div className={cx("wrapper")}>
       <span className={cx("path")}>Ladies / Dresses</span>
@@ -111,11 +102,6 @@ function ProductInfo() {
           />
         </div>
       </div>
-      {/* <input
-        type="file"
-        name="file"
-        onChange={(e) => setImg(e.target.files[0])}
-      /> */}
     </div>
   );
 }

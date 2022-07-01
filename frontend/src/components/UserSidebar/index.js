@@ -6,33 +6,36 @@ import AvailableItem from "./AvailableItem";
 import PriceItem from "./PriceItem";
 import SizeList from "./SizeList";
 import ColorList from "./ColorList";
+import { productConstants } from "src/app/constants";
 const cx = classnames.bind(styles);
 
-function UserSidebar() {
+function UserSidebar({ setFilterList, filterList }) {
   return (
-    <aside className={cx("wrapper","col","col-2")}>
+    <aside className={cx("wrapper", "col", "col-2")}>
       <div className={cx("container")}>
         <div className={cx("category")}>
           <span className={cx("category-title")}>Category</span>
           <ul className={cx("category-list")}>
-            <li className={cx("category-item")}>All dresses</li>
-            <li className={cx("category-item")}>Rompers / Jumpsuits</li>
-            <li className={cx("category-item")}>Casual dresses</li>
-            <li className={cx("category-item")}>Going out dresses</li>
-            <li className={cx("category-item")}>Party / Ocassion dresses</li>
-            <li className={cx("category-item")}>Mini dresses</li>
-            <li className={cx("category-item")}>Maxi / Midi dresses</li>
-            <li className={cx("category-item")}>Sets</li>
+          <li className={cx("category-item")}>All {filterList.typeFilter}</li>
+            {
+              productConstants[filterList.genderFilter]?.[
+                filterList.typeFilter
+              ] &&
+              productConstants[filterList.genderFilter][
+                filterList.typeFilter
+              ].map((categoryName, index) => {
+                return <li key={index} className={cx("category-item")}>{categoryName}</li>;
+              })}
           </ul>
         </div>
         <div className={cx("filter")}>
           <span className={cx("filter-title")}>Filter</span>
           <ul className={cx("filter-list")}>
             <FilterItem name="Size">
-              <SizeList/>
+              <SizeList />
             </FilterItem>
             <FilterItem name="Color">
-              <ColorList/>
+              <ColorList />
             </FilterItem>
             <FilterItem name="Brand">
               <BrandItem brandName="Zara" />
@@ -42,7 +45,7 @@ function UserSidebar() {
               <BrandItem brandName="Chanel" />
             </FilterItem>
             <FilterItem name="Price">
-              <PriceItem min={0} max={100}/>
+              <PriceItem min={0} max={100} />
             </FilterItem>
             <FilterItem name="Available">
               <AvailableItem availableName="In store" />
@@ -50,7 +53,7 @@ function UserSidebar() {
             </FilterItem>
           </ul>
         </div>
-      </div >
+      </div>
     </aside>
   );
 }
