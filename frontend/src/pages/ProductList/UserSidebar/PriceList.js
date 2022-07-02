@@ -3,9 +3,14 @@ import classnames from "classnames/bind";
 import { useState, useEffect } from "react";
 const cx = classnames.bind(styles);
 
-function PriceItem() {
+function PriceList({setFilterList}) {
   const [leftValue, setLeftValue] = useState(0);
   const [rightValue, setRightValue] = useState(100);
+  useEffect(() => {
+    setFilterList((prev) => {
+      return { ...prev, priceFilter: {left: 3*leftValue, right:3*rightValue} };
+    });
+  }, [leftValue, rightValue]);
   return (
     <div className={cx("price-item-wrapper")}>
       <div className={cx("price-item-track")}></div>
@@ -51,4 +56,4 @@ function PriceItem() {
   );
 }
 
-export default PriceItem;
+export default PriceList;

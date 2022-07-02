@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 
 async function getProductService(
+  page = 1,
   genderFilter,
   typeFilter,
   categoryFilter,
@@ -8,7 +9,8 @@ async function getProductService(
   colorFilter,
   brandFilter,
   priceFilter,
-  availableFilter
+  availableFilter,
+  sortFilter
 ) {
   const options = {};
   if (genderFilter) {
@@ -20,23 +22,44 @@ async function getProductService(
   if (categoryFilter) {
     options.categories = { $in: categoryFilter };
   }
-  if (sizeFilter) {
-    options.size = { $in: JSON.parse(sizeFilter) };
+  if (sizeFilter && sizeFilter.length > 0) {
+    options.size = { $all: sizeFilter };
   }
-  if (colorFilter) {
-    options.colors = { $in: JSON.parse(colorFilter) };
+  if (colorFilter && colorFilter.length > 0) {
+    options.colors = { $all: colorFilter };
   }
-  if (brandFilter) {
+  if (brandFilter && brandFilter.length > 0) {
     options.brand = { $in: brandFilter };
   }
   if (priceFilter) {
     options.price = {
-      $lte: Number(JSON.parse(priceFilter[0])),
-      $gte: Number(JSON.parse(priceFilter[1])),
+      $gte: priceFilter.left,
+      $lte: priceFilter.right,
     };
   }
-  const products = await Product.find(options);
-  return products;
+  const perPage = 20;
+  let products;
+  let total;
+
+  if (!sortFilter.field) {
+    products = await Product.find(options)
+      .skip(perPage * page - perPage)
+      .limit(perPage);
+    total = await Product.find(options).countDocuments();
+  } else {
+    products = await Product.find(options)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .sort({
+        [sortFilter.field]: sortFilter.isInc,
+      });
+    total = await Product.find(options)
+      .sort({
+        [sortFilter.field]: sortFilter.isInc,
+      })
+      .countDocuments();
+  }
+  return [products, perPage, total];
 }
 
 async function checkBeforeAddProductService(
@@ -51,11 +74,44 @@ async function checkBeforeAddProductService(
   quantity,
   description
 ) {
-  const isProductExists = await Product.find({ name });
+  const isProductExists = await Product.findOne({ name });
   if (!isProductExists) {
     return true;
   }
   return false;
 }
 
-module.exports = { getProductService, checkBeforeAddProductService };
+async function addProductService(
+  photos,
+  gender,
+  type,
+  name,
+  categories,
+  brand,
+  price,
+  size,
+  colors,
+  quantity,
+  description
+) {
+  await Product.create({
+    photos,
+    gender,
+    type,
+    name,
+    categories,
+    brand,
+    price,
+    size,
+    colors,
+    quantity,
+    description,
+  });
+  return true;
+}
+
+module.exports = {
+  getProductService,
+  checkBeforeAddProductService,
+  addProductService,
+};

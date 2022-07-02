@@ -1,11 +1,12 @@
 const {
   getProductService,
   checkBeforeAddProductService,
+  addProductService,
 } = require("../services/productService");
-const Product = require("../models/Product");
 
 async function getProduct(req, res) {
   const {
+    page,
     genderFilter,
     typeFilter,
     categoryFilter,
@@ -14,9 +15,11 @@ async function getProduct(req, res) {
     brandFilter,
     priceFilter,
     availableFilter,
+    sortFilter
   } = req.body;
 
-  const products = await getProductService(
+  const [products, perPage, total] = await getProductService(
+    page,
     genderFilter,
     typeFilter,
     categoryFilter,
@@ -24,9 +27,10 @@ async function getProduct(req, res) {
     colorFilter,
     brandFilter,
     priceFilter,
-    availableFilter
+    availableFilter,
+    sortFilter
   );
-  res.status(200).send(products);
+  res.status(200).send({products, perPage,total});
 }
 
 async function checkBeforeAddProduct(req, res) {
@@ -57,7 +61,7 @@ async function checkBeforeAddProduct(req, res) {
     res.status(400).send("Please add all fields");
     return;
   }
-  const isProductExists = await checkBeforeAddProductService(
+  const isValid = await checkBeforeAddProductService(
     gender,
     type,
     name,
@@ -69,28 +73,20 @@ async function checkBeforeAddProduct(req, res) {
     quantity,
     description
   );
-  if (isProductExists) {
+  if (!isValid) {
     res.status(400).send("Product exists");
   } else res.status(200).send("");
 }
 
 async function addProduct(req, res) {
-  const {
-    gender,
-    type,
-    name,
-    brand,
-    price,
-    quantity,
-    description,
-  } = req.body;
+  const { gender, type, name, brand, price, quantity, description } = req.body;
   categories = req.body.categories.split(",");
   size = req.body.size.split(",");
   colors = req.body.colors.split(",");
-  const photos = req.files.map((file,index)=>{
+  const photos = req.files.map((file, index) => {
     return file.filename;
-  })
-  await Product.create({
+  });
+  const isSuccess = addProductService(
     photos,
     gender,
     type,
@@ -101,9 +97,9 @@ async function addProduct(req, res) {
     size,
     colors,
     quantity,
-    description,
-  })
-  res.status(200).send("Upload successfully");
+    description
+  );
+  if (isSuccess) res.status(200).send("Upload successfully");
 }
 
 module.exports = { getProduct, checkBeforeAddProduct, addProduct };

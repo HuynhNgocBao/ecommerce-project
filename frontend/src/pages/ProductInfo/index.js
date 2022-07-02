@@ -1,8 +1,8 @@
 import styles from "./ProductInfo.module.scss";
 import classnames from "classnames/bind";
 import MenImg from "src/assets/images/men.jpg";
-import SizeList from "src/components/UserSidebar/SizeList";
-import ColorList from "src/components/UserSidebar/ColorList";
+import SizeList from "src/pages/ProductList/UserSidebar/SizeList";
+import ColorList from "src/pages/ProductList/UserSidebar/ColorList";
 import Button from "src/components/Button";
 import axios from "axios";
 const cx = classnames.bind(styles);
@@ -51,9 +51,13 @@ function ProductInfo() {
             <span className={cx("product-number-review")}>0 review</span>
           </div>
           <div className={cx("filter-title")}>Size</div>
-          <SizeList />
+          <SizeList
+                values={["S", "M", "L", "XL"]}
+              />
           <div className={cx("filter-title")}>Color</div>
-          <ColorList />
+          <ColorList
+                values={["Blue", "Brown", "Red", "Black"]}
+              />
           <div className={cx("quantity-wrapper")}>
             <div className={cx("quantity-title")}>Quantity</div>
             <div className={cx("quantity-choice")}>

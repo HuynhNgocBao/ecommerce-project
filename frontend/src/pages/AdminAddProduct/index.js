@@ -3,14 +3,16 @@ import axios from "axios";
 import classnames from "classnames/bind";
 import PhotoInput from "./PhotoInput";
 import FieldWrapper from "./FieldWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Dropdown from "./Dropdown";
 import Button from "src/components/Button";
-import { productConstants } from "src/app/constants";
 
 const cx = classnames.bind(styles);
 
 function AdminAddProduct() {
+  const productCategory = useSelector((state) => state.productCategory.value);
+
   const [photos, setPhotos] = useState([]);
   const [formData, setFormData] = useState({
     gender: "",
@@ -39,17 +41,19 @@ function AdminAddProduct() {
     for (let key in formData) {
       data.append(key, formData[key]);
     }
-    axios.post("/api/product/checkbeforeaddproduct", formData).then(() => {
-      axios
-        .post("/api/product/addproduct", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {})
-        .catch((err) => console.log(err));
-    })
-    .catch(err=>console.log(err));
+    axios
+      .post("/api/product/checkbeforeaddproduct", formData)
+      .then(() => {
+        axios
+          .post("/api/product/addproduct", data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(() => {})
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className={cx("wrapper")}>
@@ -64,9 +68,7 @@ function AdminAddProduct() {
           <Dropdown
             setFormData={setFormData}
             field="gender"
-            values={Object.keys(productConstants).map((constantsKey, index) => {
-              return constantsKey;
-            })}
+            values={productCategory.map((value, index) => value.gender)}
           />
         </FieldWrapper>
         <FieldWrapper title="TYPE">
@@ -75,12 +77,13 @@ function AdminAddProduct() {
             setFormData={setFormData}
             field="type"
             values={
-              formData.gender && productConstants[formData.gender]
-                ? Object.keys(productConstants[formData.gender]).map(
-                    (constantsKey, index) => {
-                      return constantsKey;
-                    }
-                  )
+              productCategory?.find((a) => a.gender === formData.gender)
+                ?.typeValue
+                ? productCategory
+                    .find((a) => a.gender === formData.gender)
+                    .typeValue.map((value, index) => {
+                      return value.name;
+                    })
                 : []
             }
           />
@@ -99,12 +102,15 @@ function AdminAddProduct() {
             setFormData={setFormData}
             field="categories"
             values={
-              productConstants[formData.gender]?.[formData.type]
-                ? productConstants[formData.gender][formData.type].map(
-                    (value, index) => {
+              productCategory
+                ?.find((a) => a.gender === formData.gender)
+                ?.typeValue.find((a) => a.name === formData.type)?.categories
+                ? productCategory
+                    .find((a) => a.gender === formData.gender)
+                    .typeValue.find((a) => a.name === formData.type)
+                    .categories.map((value, index) => {
                       return value;
-                    }
-                  )
+                    })
                 : []
             }
             multiplechoice
@@ -137,7 +143,7 @@ function AdminAddProduct() {
           <Dropdown
             setFormData={setFormData}
             field="colors"
-            values={["Blue", "Brown", "White", "Black"]}
+            values={["Blue", "Brown", "Red", "Black"]}
             multiplechoice
           />
         </FieldWrapper>

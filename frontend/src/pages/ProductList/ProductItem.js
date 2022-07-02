@@ -18,7 +18,7 @@ function ProductItem({ product }) {
   const productPhoto = cld.image(product.photos[0]);
 
   return (
-    <Link to="/productinfo" className={cx("product-item", "col", "col-2-4")}>
+    <Link to={`/productinfo/${product._id}`} className={cx("product-item", "col", "col-2-4")}>
       <div className={cx("product-item-img")}>
         {product.quantity <= 0 && (
           <span className={cx("sold-out")}>Sold out</span>

@@ -1,10 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
 import UserLayout from "src/layouts/UserLayout";
 import AdminLayout from "src/layouts/AdminLayout";
 import { publicRoutes, privateRoutes, adminRoutes } from "./routes";
+import { getProductCategory} from "src/features/productCategory/productCategorySlice";
 import "src/assets/css/style.css";
 
 function App() {
+  const dispatch = useDispatch();
+  const productCategory = useSelector((state) => state.productCategory.value);
+
+  useEffect(() => {
+    dispatch(getProductCategory());
+  }, []);
   return (
     <Router>
       <div className="App">

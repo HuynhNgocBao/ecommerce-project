@@ -1,17 +1,18 @@
 import styles from "./UserHeader.module.scss";
 import classnames from "classnames/bind";
 import NavItemUserHeader from "./NavItemUserHeader";
-import { productConstants } from "src/app/constants";
+import { useSelector} from "react-redux";
 const cx = classnames.bind(styles);
 
 function NavUserHeader() {
+  const productCategory = useSelector((state) => state.productCategory.value);
   return (
     <nav className={cx("nav")}>
       <div className={cx("nav-list")}>
-          {Object.keys(productConstants).map((constantsKey, index)=>{
-            return <NavItemUserHeader key={index} title={constantsKey}/>
-          })}
-        </div>
+        {productCategory.map((value, index) => {
+          return <NavItemUserHeader key={index} title={value.gender} />;
+        })}
+      </div>
     </nav>
   );
 }
