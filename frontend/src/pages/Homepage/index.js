@@ -6,6 +6,7 @@ import LadiesImage from "src/assets/images/ladies.jpg";
 import BoysImage from "src/assets/images/boys.jpg";
 import GirlsImage from "src/assets/images/girls.jpg";
 import Button from "src/components/Button";
+import { Link } from "react-router-dom";
 
 const cx = classnames.bind(styles);
 
@@ -15,7 +16,7 @@ function Homepage() {
       <div className={cx("container")}>
         <div className={cx("outfit-of-the-week")}>
           <span className={cx("title-week")}>OUTFIT OF THE WEEK</span>
-          <Button primary className={cx("shopnow-btn-week")}>Shop now</Button>
+          <Link to="/productlist"><Button primary className={cx("shopnow-btn-week")}>Shop now</Button></Link>
         </div>
         <div className={cx("card-list")}>
           <CardItem title="Men" image={MenImage} />

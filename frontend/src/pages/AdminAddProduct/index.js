@@ -20,10 +20,10 @@ function AdminAddProduct() {
     name: "",
     categories: [],
     brand: "",
-    price: 0,
+    price: "",
     size: [],
     colors: [],
-    quantity: 0,
+    quantity: "",
     description: "",
   });
   const handleChange = (e) => {
@@ -126,9 +126,14 @@ function AdminAddProduct() {
         <FieldWrapper title="PRICE ($)">
           <input
             className={cx("field-input")}
+            type="text"
             name="price"
             value={formData.price}
-            onChange={handleChange}
+            onChange={(e) => {
+              const re = /^[0-9\b]+$/;
+              if (e.target.value === "" || re.test(e.target.value))
+                handleChange(e);
+            }}
           />
         </FieldWrapper>
         <FieldWrapper title="SIZE">
@@ -151,8 +156,13 @@ function AdminAddProduct() {
           <input
             className={cx("field-input")}
             name="quantity"
+            type="text"
+            onChange={(e) => {
+              const re = /^[0-9\b]+$/;
+              if (e.target.value === "" || re.test(e.target.value))
+                handleChange(e);
+            }}
             value={formData.quantity}
-            onChange={handleChange}
           />
         </FieldWrapper>
         <FieldWrapper title="DESCRIPTION">

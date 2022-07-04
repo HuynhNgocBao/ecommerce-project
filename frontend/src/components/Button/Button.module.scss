@@ -20,6 +20,12 @@
   font-weight: 600;
 }
 
+.fourth{
+  box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
+  background-color: #ff5f6d;
+  color: var(--white);
+}
+
 .disabled {
   cursor: not-allowed;
   background-color: var(--white);

@@ -1,6 +1,6 @@
 import styles from "./ProductList.module.scss";
 import classnames from "classnames/bind";
-import UserSidebar from "src/pages/ProductList/UserSidebar";
+import UserSidebar from "src/components/UserSidebar";
 import ProductItem from "./ProductItem";
 import SortOption from "./SortOption";
 import { useLocation } from "react-router-dom";
@@ -28,7 +28,7 @@ function ProductList() {
       left: 0,
       right: 300,
     },
-    availableFilter: null,
+    availableFilter:[],
     sortFilter: {
       field: null,
       isInc: 1,
@@ -59,9 +59,9 @@ function ProductList() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container", "grid", "wide")}>
-        <span className={cx("path")}>
+        {filterList.genderFilter && <span className={cx("path")}>
           {filterList.genderFilter} / {filterList.typeFilter}
-        </span>
+        </span>}
         <div className={cx("row")}>
           <UserSidebar setFilterList={setFilterList} filterList={filterList} />
           <div className={cx("product", "col-10")}>
@@ -89,6 +89,7 @@ function ProductList() {
               )}
             </div>
             <div className={cx("product-list", "row")}>
+              {productList.length === 0 && <div className={cx("no-result")}>No results found</div>}
               {productList &&
                 productList.map((product, index) => {
                   return (

@@ -13,30 +13,30 @@ function DropDown({
 }) {
   const [arrowUp, setArrowUp] = useState(false);
   const [showDropdownList, setShowDropdownList] = useState(false);
-  const [DropdownValues, setDropdownValues] = useState(() => {
+  const [DropdownResults, setDropdownResults] = useState(() => {
     if (multiplechoice) return [];
     else return "";
   });
 
   useEffect(() => {
-    if (!multiplechoice) setDropdownValues((prev) => "");
-    else setDropdownValues((prev) => []);
+    if (!multiplechoice) setDropdownResults((prev) => "");
+    else setDropdownResults((prev) => []);
   }, parent);
 
   useEffect(() => {
     setFormData((prev) => {
-      return { ...prev, [field]: DropdownValues };
+      return { ...prev, [field]: DropdownResults };
     });
-  }, [DropdownValues]);
+  }, [DropdownResults]);
 
   const handleClickDropdownItem = (e) => {
     setShowDropdownList((prev) => !prev);
     if (!multiplechoice) {
-      setDropdownValues((prev) => {
+      setDropdownResults((prev) => {
         return e.target.innerText;
       });
-    } else if (!DropdownValues.includes(e.target.innerText)) {
-      setDropdownValues((prev) => {
+    } else if (!DropdownResults.includes(e.target.innerText)) {
+      setDropdownResults((prev) => {
         return [...prev, e.target.innerText];
       });
     }
@@ -53,14 +53,14 @@ function DropDown({
         }}
       >
         {multiplechoice &&
-          DropdownValues.map((value, index) => (
-            <div className={cx("dropdown-result")} key={index}>
+          DropdownResults.map((value, index) => (
+            <div className={cx("dropdown-result-multiple")} key={index}>
               {value}
               <i
                 className={cx("dropdown-result-delete", "icon-cross")}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setDropdownValues((prev) => {
+                  setDropdownResults((prev) => {
                     return prev.filter((a) => a !== value);
                   });
                 }}
@@ -68,7 +68,7 @@ function DropDown({
             </div>
           ))}
         {!multiplechoice && (
-          <div className={cx("dropdown-result")}> {DropdownValues}</div>
+          <div className={cx("dropdown-result")}> {DropdownResults}</div>
         )}
         <i className={cx("dropdown-icon", "icon-arrow", { up: arrowUp })} />
       </div>

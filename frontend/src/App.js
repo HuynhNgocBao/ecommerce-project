@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import UserLayout from "src/layouts/UserLayout";
 import AdminLayout from "src/layouts/AdminLayout";
 import { publicRoutes, privateRoutes, adminRoutes } from "./routes";
-import { getProductCategory} from "src/features/productCategory/productCategorySlice";
+import { getProductCategory } from "src/features/productCategory/productCategorySlice";
+import RequiredLogin from "./components/RequiredLogin";
 import "src/assets/css/style.css";
 
 function App() {
@@ -25,14 +26,36 @@ function App() {
             }
             const Page = route.component;
             return (
-            <Route
-            key={index}
-            path={route.path} 
-            element={
-              <Layout>
-                <Page/>
-              </Layout>
-            } />
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+          ;
+          {privateRoutes.map((route, index) => {
+            let Layout = UserLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            }
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <RequiredLogin>
+                      <Page />
+                    </RequiredLogin>
+                  </Layout>
+                }
+              />
             );
           })}
           ;
@@ -43,14 +66,15 @@ function App() {
             }
             const Page = route.component;
             return (
-            <Route
-            key={index}
-            path={route.path} 
-            element={
-              <Layout>
-                <Page/>
-              </Layout>
-            } />
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
             );
           })}
         </Routes>

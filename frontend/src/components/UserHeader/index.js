@@ -23,7 +23,9 @@ function Header() {
             <input className={cx("search-input")} placeholder="Search" />
             <i className={cx("search-icon", "icon-search")} />
           </div>
-          <Link to="/"><img src={Logo} alt="logo" className={cx("logo")} /></Link>
+          <Link to="/">
+            <img src={Logo} alt="logo" className={cx("logo")} />
+          </Link>
           <div className={cx("info")}>
             {!user && (
               <Button
@@ -42,14 +44,23 @@ function Header() {
                 Log in
               </Button>
             )}
-            {user && <div className={cx("avatar-dropdown")}>
-              <span className={cx("avatar")}>{user.name}</span>
-              <ul className={cx("dropdown-list")}>
-                <li className={cx("dropdown-item")}>Account setting</li>
-                <li className={cx("dropdown-item")} onClick={() => dispatch(logoutUser())}>Logout</li>
-              </ul>
-              </div>}
-            <i className={cx("cart", "icon-cart")} />
+            {user && (
+              <div className={cx("avatar-dropdown")}>
+                <span className={cx("avatar")}>{user.name}</span>
+                <ul className={cx("dropdown-list")}>
+                  <li className={cx("dropdown-item")}>Account setting</li>
+                  <li
+                    className={cx("dropdown-item")}
+                    onClick={() => dispatch(logoutUser())}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+            <Link to="/shoppingcart">
+              <i className={cx("cart", "icon-cart")} />
+            </Link>
           </div>
         </div>
       </div>

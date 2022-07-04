@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import classnames from "classnames/bind";
 import FilterItem from "./FilterItem";
 import BrandList from "./BrandList";
-import AvailableItem from "./AvailableItem";
+import AvailableList from "./AvailableList";
 import PriceList from "./PriceList";
 import SizeList from "./SizeList";
 import ColorList from "./ColorList";
@@ -28,26 +28,27 @@ function UserSidebar({ setFilterList, filterList }) {
               All {filterList.typeFilter}
             </li>
             {productCategory
-                ?.find((a) => a.gender === filterList.genderFilter)
-                ?.typeValue.find((a) => a.name === filterList.typeFilter)?.categories &&
-                productCategory
-                    .find((a) => a.gender === filterList.genderFilter)
-                    .typeValue.find((a) => a.name === filterList.typeFilter)
-                    .categories.map((categoryName, index) => {
-                return (
-                  <li
-                    key={index}
-                    className={cx("category-item")}
-                    onClick={(e) => {
-                      setFilterList((prev) => {
-                        return { ...prev, categoryFilter: categoryName };
-                      });
-                    }}
-                  >
-                    {categoryName}
-                  </li>
-                );
-              })}
+              ?.find((a) => a.gender === filterList.genderFilter)
+              ?.typeValue.find((a) => a.name === filterList.typeFilter)
+              ?.categories &&
+              productCategory
+                .find((a) => a.gender === filterList.genderFilter)
+                .typeValue.find((a) => a.name === filterList.typeFilter)
+                .categories.map((categoryName, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={cx("category-item")}
+                      onClick={(e) => {
+                        setFilterList((prev) => {
+                          return { ...prev, categoryFilter: categoryName };
+                        });
+                      }}
+                    >
+                      {categoryName}
+                    </li>
+                  );
+                })}
           </ul>
         </div>
         <div className={cx("filter")}>
@@ -66,14 +67,19 @@ function UserSidebar({ setFilterList, filterList }) {
               />
             </FilterItem>
             <FilterItem name="Brand">
-              <BrandList values={["Zara","H&M","Pull&Bear","Dior","Chanel"]} setFilterList={setFilterList}/>
+              <BrandList
+                values={["Zara", "H&M", "Pull&Bear", "Dior", "Chanel"]}
+                setFilterList={setFilterList}
+              />
             </FilterItem>
             <FilterItem name="Price">
-              <PriceList min={0} max={100} setFilterList={setFilterList}/>
+              <PriceList min={0} max={100} setFilterList={setFilterList} />
             </FilterItem>
             <FilterItem name="Available">
-              <AvailableItem availableName="In store" />
-              <AvailableItem availableName="Out of stock" />
+              <AvailableList
+                values={["In store", "Out of stock"]}
+                setFilterList={setFilterList}
+              />
             </FilterItem>
           </ul>
         </div>

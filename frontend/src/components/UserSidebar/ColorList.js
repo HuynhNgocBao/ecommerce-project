@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 const cx = classnames.bind(styles);
 
 function ColorList({ values = [], setFilterList }) {
-  const [colorList, setColorList] = useState([]);
+  const [color, setColor] = useState(null);
   useEffect(() => {
     if (setFilterList) setFilterList((prev) => {
-      return { ...prev, colorFilter: colorList };
+      return { ...prev, colorFilter: color };
     });
-  }, [colorList]);
+  }, [color]);
   return (
     <div className={cx("color-item-wrapper")}>
       {values.map((value, index) => {
@@ -18,10 +18,11 @@ function ColorList({ values = [], setFilterList }) {
             <input
               type="checkbox"
               className={cx("color-item-checkbox")}
+              checked={color===value}
               onChange={(e) => {
                 if (e.target.checked) {
-                  setColorList((prev) => [...prev, value]);
-                } else setColorList((prev) => prev.filter((a) => a !== value));
+                  setColor((prev) => value);
+                } else setColor((prev) => null);
               }}
             />
             <div

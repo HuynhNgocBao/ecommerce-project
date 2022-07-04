@@ -101,14 +101,24 @@ li {
   max-width: 20%;
 }
 
-.col-1-7{
-  flex: 0 0 17.142857%;
-  max-width: 17.142857%;
-}
-
 .col-3 {
   flex: 0 0 25%;
   max-width: 25%;
+}
+
+.col-4{
+  flex: 0 0 33.33333%;
+  max-width: 33.33333%;
+}
+
+.col-8{
+  flex: 0 0 66.66667%;
+  max-width: 66.66667%;
+}
+
+.col-9{
+  flex: 0 0 75%;
+  max-width: 75%;
 }
 
 .col-10 {

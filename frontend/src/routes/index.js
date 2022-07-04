@@ -11,14 +11,13 @@ import AdminProducts from "src/pages/AdminProducts";
 export const publicRoutes = [
     {path: '/', component : Homepage},
     {path: '/productlist', component: ProductList},
-    {path: '/productinfo/:id', component: ProductInfo},
-    {path: '/shoppingcart', component: ShoppingCart},
     {path: '/createnewpassword', component: CreateNewPassword},
     {path: '/verifyaccount', component: VerifyAccount},
 ];
 
 export const privateRoutes = [
-
+    {path: '/productinfo/:id', component: ProductInfo},
+    {path: '/shoppingcart', component: ShoppingCart},
 ];
 
 export const adminRoutes = [

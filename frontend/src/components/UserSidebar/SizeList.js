@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 const cx = classnames.bind(styles);
 
 function SizeList({ values = [], setFilterList }) {
-  const [sizeList, setSizeList] = useState([]);
+  const [size, setSize] = useState(null);
   useEffect(() => {
     if (setFilterList) setFilterList((prev) => {
-      return { ...prev, sizeFilter: sizeList };
+      return { ...prev, sizeFilter: size };
     });
-  }, [sizeList]);
+  }, [size]);
   return (
     <div className={cx("size-item-wrapper")}>
       {values.map((value, index) => {
@@ -18,11 +18,12 @@ function SizeList({ values = [], setFilterList }) {
             <input
               className={cx("size-item-checkbox")}
               type="checkbox"
+              checked={size===value}
               onChange={(e) => {
                 if (e.target.checked) {
-                  setSizeList((prev) => [...prev, value]);
+                  setSize((prev) => value);
                 } else {
-                  setSizeList((prev) => prev.filter((a) => a !== value));
+                  setSize((prev) => null);
                 }
               }}
             />

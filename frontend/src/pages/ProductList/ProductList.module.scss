@@ -182,3 +182,17 @@
   text-align: center;
   color: var(--dark-grey);
 }
+
+.no-result{
+  position: absolute;
+  left: 35%;
+  top: 80px;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--greyish-two);
+}

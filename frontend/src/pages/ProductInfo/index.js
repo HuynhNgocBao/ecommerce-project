@@ -1,109 +1,99 @@
 import styles from "./ProductInfo.module.scss";
 import classnames from "classnames/bind";
-import MenImg from "src/assets/images/men.jpg";
-import SizeList from "src/pages/ProductList/UserSidebar/SizeList";
-import ColorList from "src/pages/ProductList/UserSidebar/ColorList";
+import SizeList from "src/components/UserSidebar/SizeList";
+import ColorList from "src/components/UserSidebar/ColorList";
 import Button from "src/components/Button";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ProductImageList from "./ProductImageList";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen";
+import Quantity from "./Quantity";
 const cx = classnames.bind(styles);
 
 function ProductInfo() {
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: process.env.REACT_APP_CLOUD_NAME_CLOUDINARY,
+    },
+  });
+  const [moreProducts, setMoreProducts] = useState([]);
+  const [product, setProduct] = useState(null);
+  const { id } = useParams();
+  useEffect(() => {
+    axios
+      .post("/api/product/getproductinfo", { id })
+      .then((response) => {
+        setProduct((prev) => response.data);
+        return response.data;
+      })
+      .then((data) => {
+        axios
+          .post("/api/product/getmoreproductswithfield", {
+            field: "brand",
+            value: data.brand,
+          })
+          .then((response) => setMoreProducts((prev) => response.data));
+      });
+  }, [id]);
+  useEffect(() => {}, []);
+  if (!product) return <></>;
   return (
     <div className={cx("wrapper")}>
-      <span className={cx("path")}>Ladies / Dresses</span>
+      <div className={cx("path")}>
+        {product.gender}/{product.type}
+      </div>
       <div className={cx("container")}>
-        <div className={cx("product-img-list-left")}>
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-left")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-left")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-left")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-left")}
-          />
-        </div>
-        <img src={MenImg} alt="Product" className={cx("product-img-main")} />
+        <ProductImageList photos={product.photos}></ProductImageList>
+        <AdvancedImage
+          cldImg={cld.image(product.photos[0])}
+          alt="Product"
+          className={cx("product-img-main")}
+        />
         <div className={cx("product-info")}>
-          <span className={cx("product-name")}>
-            Collete Stretch Linen Minidress
-          </span>
-          <span className={cx("product-price")}>$69.00</span>
+          <span className={cx("product-name")}>{product.name}</span>
+          <span className={cx("product-price")}>${product.price}</span>
           <div className={cx("product-review")}>
             <div className={cx("product-star")}>
-              <i className={cx("icon-star")}/>
-              <i className={cx("icon-star")}/>
-              <i className={cx("icon-star")}/>
-              <i className={cx("icon-star")}/>
-              <i className={cx("icon-star")}/>
+              <i className={cx("icon-star")} />
+              <i className={cx("icon-star")} />
+              <i className={cx("icon-star")} />
+              <i className={cx("icon-star")} />
+              <i className={cx("icon-star")} />
             </div>
             <span className={cx("product-number-review")}>0 review</span>
           </div>
           <div className={cx("filter-title")}>Size</div>
-          <SizeList
-                values={["S", "M", "L", "XL"]}
-              />
+          <SizeList values={product.size} />
           <div className={cx("filter-title")}>Color</div>
-          <ColorList
-                values={["Blue", "Brown", "Red", "Black"]}
-              />
+          <ColorList values={product.colors} />
           <div className={cx("quantity-wrapper")}>
             <div className={cx("quantity-title")}>Quantity</div>
-            <div className={cx("quantity-choice")}>
-              <div className={cx("decrease")}>
-                <i className={cx("icon-minus")}/>
-              </div>
-              <div className={cx("quantity")}>3</div>
-              <div className={cx("increase")}>
-                <i className={cx("icon-plus")}/>
-              </div>
-            </div>
+            <Quantity quantityMax={product.quantity} />
           </div>
           <Button third className={cx("add-to-cart")}>
             Add to cart
           </Button>
           <div className={cx("product-result")}>
-            <h3 className={cx("product-result-title")}>Model wearing size S</h3>
-            <p className={cx("product-result-info")}>- Chest: 36”</p>
-            <p className={cx("product-result-info")}>- Length: 25.75”</p>
+            <div className={cx("product-result-info")}>
+              {product.description}
+            </div>
           </div>
         </div>
-        <div className={cx("product-img-list-right")}>
+        <div style={{ marginLeft: "auto" }}>
           <div className={cx("more-title")}>
             <h4>More from</h4>
-            <p>Zara</p>
+            <p>{product.brand}</p>
           </div>
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-right")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-right")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-right")}
-          />
-          <img
-            src={MenImg}
-            alt="Product"
-            className={cx("product-img-item-right")}
-          />
+          <ProductImageList
+            photos={moreProducts.map((product, index) => {
+              return product.photos[0];
+            })}
+            ids={moreProducts.map((product, index) => {
+              return product._id;
+            })}
+          ></ProductImageList>
         </div>
       </div>
     </div>

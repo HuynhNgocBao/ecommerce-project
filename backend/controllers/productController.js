@@ -2,6 +2,8 @@ const {
   getProductService,
   checkBeforeAddProductService,
   addProductService,
+  getProductInfoService,
+  getMoreProductsWithFieldService,
 } = require("../services/productService");
 
 async function getProduct(req, res) {
@@ -102,4 +104,18 @@ async function addProduct(req, res) {
   if (isSuccess) res.status(200).send("Upload successfully");
 }
 
-module.exports = { getProduct, checkBeforeAddProduct, addProduct };
+async function getProductInfo(req,res){
+  const {id} = req.body;
+  const product = await getProductInfoService(id);
+  if (product) res.status(200).send(product);
+  else res.status(400).send("Product not found");
+}
+
+async function getMoreProductsWithField(req,res){
+  const {field, value} = req.body;
+  const products = await getMoreProductsWithFieldService(field,value);
+  if (products) res.status(200).send(products);
+  else res.status(400).send("Products not found");
+}
+
+module.exports = { getProduct, checkBeforeAddProduct, addProduct, getProductInfo, getMoreProductsWithField };

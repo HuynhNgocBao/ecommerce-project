@@ -22,11 +22,11 @@ async function getProductService(
   if (categoryFilter) {
     options.categories = { $in: categoryFilter };
   }
-  if (sizeFilter && sizeFilter.length > 0) {
-    options.size = { $all: sizeFilter };
+  if (sizeFilter) {
+    options.size = { $in: sizeFilter };
   }
-  if (colorFilter && colorFilter.length > 0) {
-    options.colors = { $all: colorFilter };
+  if (colorFilter) {
+    options.colors = { $in: colorFilter };
   }
   if (brandFilter && brandFilter.length > 0) {
     options.brand = { $in: brandFilter };
@@ -36,6 +36,14 @@ async function getProductService(
       $gte: priceFilter.left,
       $lte: priceFilter.right,
     };
+  }
+  if (availableFilter && availableFilter.length===1){
+    if (availableFilter[0] === 0){
+      options.quantity = {$gte: 1};
+    }
+    else{
+      options.quantity = 0;
+    }
   }
   const perPage = 20;
   let products;
@@ -110,8 +118,22 @@ async function addProductService(
   return true;
 }
 
+async function getProductInfoService(id){
+  const product = await Product.findById(id);
+  if (product) return product;
+  return null;
+}
+
+async function getMoreProductsWithFieldService(field, value){
+  const products = await Product.find({[field]: value});
+  if (products) return products;
+  else return null;
+}
+
 module.exports = {
   getProductService,
   checkBeforeAddProductService,
   addProductService,
+  getProductInfoService,
+  getMoreProductsWithFieldService,
 };

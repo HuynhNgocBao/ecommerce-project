@@ -12,7 +12,7 @@ function CardItem({title, image}) {
       style={{backgroundImage: `url(${image})`}}
       >
         <span className={cx("title")}>{title}</span>
-        <Link to="/productlist"><Button primary className={cx("shopnow-btn")}>Shop now</Button></Link>
+        <Link to={`/productlist?genderFilter=${title}`}><Button primary className={cx("shopnow-btn")}>Shop now</Button></Link>
       </div>
     </div>
   );
