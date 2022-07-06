@@ -1,14 +1,14 @@
-import styles from "./Modal.module.scss";
-import classnames from "classnames/bind";
-import axios from "axios";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "src/features/auth/authSlice";
-import { showModal, closeModal } from "src/features/modal/modalSlice";
-import { setError, clearError } from "src/features/auth/authSlice";
-import { useForm } from "react-hook-form";
-import FormGroup from "src/components/FormGroup";
-import Button from "src/components/Button";
+import styles from './Modal.module.scss';
+import classnames from 'classnames/bind';
+import axios from 'axios';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from 'src/features/auth/authSlice';
+import { showModal, closeModal } from 'src/features/modal/modalSlice';
+import { setError, clearError } from 'src/features/auth/authSlice';
+import { useForm } from 'react-hook-form';
+import FormGroup from 'src/components/FormGroup';
+import Button from 'src/components/Button';
 const cx = classnames.bind(styles);
 
 function Login() {
@@ -17,14 +17,14 @@ function Login() {
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm({
-    mode: "all",
+    mode: 'all',
   });
   const dispatch = useDispatch();
   const errormsg = useSelector((state) => state.auth.error);
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -35,7 +35,7 @@ function Login() {
 
   const onSubmit = (e) => {
     axios
-      .post("/api/auth/login", formData)
+      .post('/api/auth/login', formData)
       .then(() => {
         dispatch(clearError());
         dispatch(getUser());
@@ -52,21 +52,18 @@ function Login() {
   };
 
   return (
-    <div className={cx("wrapper")} onClick={handleCloseModal}>
+    <div className={cx('wrapper')} onClick={handleCloseModal}>
       <form
-        className={cx("container")}
+        className={cx('container')}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <i
-          className={cx("close","icon-cross")}
-          onClick={handleCloseModal}
-        />
+        <i className={cx('close', 'icon-cross')} onClick={handleCloseModal} />
 
-        <div className={cx("header")}>
-          <span className={cx("title")}>Login</span>
-          <span className={cx("error", "error-header")}>{errormsg}</span>
+        <div className={cx('header')}>
+          <span className={cx('title')}>Login</span>
+          <span className={cx('error', 'error-header')}>{errormsg}</span>
         </div>
         <FormGroup
           label="EMAIL"
@@ -76,7 +73,7 @@ function Login() {
           value={formData.email}
           handleChange={handleChange}
           register={register}
-          errors = {errors}
+          errors={errors}
         />
         <FormGroup
           label="PASSWORD"
@@ -86,29 +83,26 @@ function Login() {
           value={formData.password}
           handleChange={handleChange}
           register={register}
-          errors = {errors}
+          errors={errors}
         />
-        <div className={cx("choice")}>
-          <div className={cx("remember-password")}>
-            <input type="checkbox" className={cx("check-box")} />
+        <div className={cx('choice')}>
+          <div className={cx('remember-password')}>
+            <input type="checkbox" className={cx('check-box')} />
             <span>Remember password</span>
           </div>
-          <span
-            className={cx("forgot-password")}
-            onClick={() => dispatch(showModal("forgotpassword"))}
-          >
+          <span className={cx('forgot-password')} onClick={() => dispatch(showModal('forgotpassword'))}>
             Forgot your password?
           </span>
         </div>
-        <Button primary disabled={!isDirty ||!isValid} className={cx("submit")} onClick={handleSubmit(onSubmit)}>
+        <Button primary disabled={!isDirty || !isValid} className={cx('submit')} onClick={handleSubmit(onSubmit)}>
           Log in
         </Button>
-        <div className={cx("footer")}>
+        <div className={cx('footer')}>
           Don't you have an account?
           <span
-            className={cx("link")}
+            className={cx('link')}
             onClick={() => {
-              dispatch(showModal("register"));
+              dispatch(showModal('register'));
               dispatch(clearError());
             }}
           >

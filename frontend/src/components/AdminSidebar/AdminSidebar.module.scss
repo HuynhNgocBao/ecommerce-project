@@ -6,9 +6,9 @@
   box-shadow: 1px 0 0 0 var(--white-three);
 }
 
-.logo{
-    padding-top: 32px;
-    padding-bottom: 45px;
+.logo {
+  padding-top: 32px;
+  padding-bottom: 45px;
 }
 
 .nav-item {
@@ -17,12 +17,13 @@
   display: flex;
   align-items: center;
   margin: 8px 0;
-  &:hover .nav-item-icon, &:hover .nav-item-title{
+  &:hover .nav-item-icon,
+  &:hover .nav-item-title {
     color: var(--pale-orange);
   }
 }
 
-.nav-item-title{
+.nav-item-title {
   font-size: 14px;
   font-weight: 600;
   font-stretch: normal;
@@ -32,7 +33,7 @@
   color: var(--charcoal-grey);
 }
 
-.nav-item-icon{
-    color: var(--greyish-two);
-    margin: 0 20px;
+.nav-item-icon {
+  color: var(--greyish-two);
+  margin: 0 20px;
 }

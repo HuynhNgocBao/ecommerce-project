@@ -1,5 +1,5 @@
 function AdminProducts() {
-    return <></>;
+  return <></>;
 }
 
 export default AdminProducts;

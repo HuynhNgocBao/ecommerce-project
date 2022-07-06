@@ -30,7 +30,7 @@
   color: var(--greyish-two);
 }
 
-.header{
+.header {
   margin-bottom: 35px;
   display: flex;
   flex-direction: column;
@@ -48,7 +48,9 @@
   margin-bottom: 9px;
 }
 
-.error, .instruction, .success {
+.error,
+.instruction,
+.success {
   font-size: 10px;
   font-weight: 500;
   font-stretch: normal;
@@ -57,19 +59,21 @@
   letter-spacing: normal;
 }
 
-.instruction, .success, .error-header{
+.instruction,
+.success,
+.error-header {
   text-align: center;
 }
 
-.error{
+.error {
   color: var(--strawberry);
 }
 
-.instruction{
-  color: #808080
+.instruction {
+  color: #808080;
 }
 
-.success{
+.success {
   color: green;
 }
 
@@ -104,7 +108,7 @@
 
 .link {
   color: var(--pumpkin-orange);
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }
@@ -128,7 +132,7 @@
   cursor: pointer;
 }
 
-.remember-password{
+.remember-password {
   display: flex;
   align-items: center;
 }

@@ -1,7 +1,7 @@
-const User = require("../models/User");
-const sendMail = require("../helpers/mailgun");
-const bcrypt = require("bcrypt");
-const { generateToken, verifyToken } = require("../helpers/jwt");
+const User = require('../models/User');
+const sendMail = require('../helpers/mailgun');
+const bcrypt = require('bcrypt');
+const { generateToken, verifyToken } = require('../helpers/jwt');
 
 async function registerService(name, email, password) {
   const userExists = await User.findOne({ email });
@@ -15,11 +15,11 @@ async function registerService(name, email, password) {
       isVerified: false,
     });
     const user = await User.findOne({ email });
-    const token = generateToken(user._id, "30d");
+    const token = generateToken(user._id, '30d');
     const messageData = {
-      from: "No reply <baohuynhxayda@gmail.com>",
+      from: 'No reply <baohuynhxayda@gmail.com>',
       to: email,
-      subject: "Verify account",
+      subject: 'Verify account',
       text: `Please go to http://localhost:3000/verifyaccount?token=${token} to verify your account`,
     };
     sendMail(messageData);
@@ -40,40 +40,40 @@ async function verifyAccountService(token) {
 async function loginService(email, password) {
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    const token = generateToken(user._id, "30d");
+    const token = generateToken(user._id, '30d');
     let messageData;
     if (user.isVerified === false) {
       messageData = {
-        from: "No reply <baohuynhxayda@gmail.com>",
+        from: 'No reply <baohuynhxayda@gmail.com>',
         to: email,
-        subject: "Verify account",
+        subject: 'Verify account',
         text: `Please go to http://localhost:3000/verifyaccount?token=${token} to verify your account`,
       };
       sendMail(messageData);
-      return [null, "Please check your email to verify your account"];
+      return [null, 'Please check your email to verify your account'];
     } else {
       messageData = {
-        from: "No reply <baohuynhxayda@gmail.com>",
+        from: 'No reply <baohuynhxayda@gmail.com>',
         to: email,
-        subject: "Login successfully",
-        text: "Login successfully",
+        subject: 'Login successfully',
+        text: 'Login successfully',
       };
       sendMail(messageData);
       return [token, null];
     }
   } else {
-    return [null, "Your email/password is invalid"];
+    return [null, 'Your email/password is invalid'];
   }
 }
 
 async function forgotPasswordService(email) {
   const user = await User.findOne({ email });
   if (user) {
-    const token = generateToken(user._id, "10m");
+    const token = generateToken(user._id, '10m');
     const messageData = {
-      from: "No reply <baohuynhxayda@gmail.com>",
+      from: 'No reply <baohuynhxayda@gmail.com>',
       to: email,
-      subject: "Change password",
+      subject: 'Change password',
       text: `Please go to http://localhost:3000/createnewpassword?token=${token} to change your password`,
     };
     sendMail(messageData);

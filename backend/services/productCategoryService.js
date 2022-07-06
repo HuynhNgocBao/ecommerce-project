@@ -1,4 +1,4 @@
-const ProductCategory = require("../models/ProductCategory");
+const ProductCategory = require('../models/ProductCategory');
 
 async function getProductCategoryService() {
   const productCategories = await ProductCategory.find();
@@ -6,9 +6,12 @@ async function getProductCategoryService() {
 }
 
 async function addProductCategoryService(genderName, typeValueName, categories) {
-  const productCategory = await ProductCategory.findOneAndUpdate({gender: genderName}, {
-    $push: { typeValue: { name: typeValueName, categories } },
-  });
+  const productCategory = await ProductCategory.findOneAndUpdate(
+    { gender: genderName },
+    {
+      $push: { typeValue: { name: typeValueName, categories } },
+    },
+  );
   return productCategory;
 }
 

@@ -1,5 +1,5 @@
-@import "normalize.css";
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,500&display=swap");
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;1,500&display=swap');
 * {
   padding: 0;
   margin: 0;
@@ -46,7 +46,7 @@ input {
   background-color: transparent;
 }
 
-button{
+button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,6 +59,10 @@ a {
 
 li {
   list-style-type: none;
+}
+
+img{
+  object-fit: cover;
 }
 
 .grid {
@@ -79,7 +83,7 @@ li {
   margin-right: -12px;
 }
 
-.row-no-gutters{
+.row-no-gutters {
   display: flex;
   flex-wrap: wrap;
   margin-right: 0;
@@ -91,7 +95,7 @@ li {
   padding-right: 12px;
 }
 
-.col-2{
+.col-2 {
   flex: 0 0 16.66667%;
   max-width: 16.66667%;
 }
@@ -106,17 +110,17 @@ li {
   max-width: 25%;
 }
 
-.col-4{
+.col-4 {
   flex: 0 0 33.33333%;
   max-width: 33.33333%;
 }
 
-.col-8{
+.col-8 {
   flex: 0 0 66.66667%;
   max-width: 66.66667%;
 }
 
-.col-9{
+.col-9 {
   flex: 0 0 75%;
   max-width: 75%;
 }

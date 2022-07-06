@@ -1,30 +1,30 @@
-import styles from "./AdminAddProduct.module.scss";
-import axios from "axios";
-import classnames from "classnames/bind";
-import PhotoInput from "./PhotoInput";
-import FieldWrapper from "./FieldWrapper";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Dropdown from "./Dropdown";
-import Button from "src/components/Button";
+import styles from './AdminAddProduct.module.scss';
+import axios from 'axios';
+import classnames from 'classnames/bind';
+import PhotoInput from './PhotoInput';
+import FieldWrapper from './FieldWrapper';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Dropdown from './Dropdown';
+import Button from 'src/components/Button';
+import PhotoList from './PhotoList';
 
 const cx = classnames.bind(styles);
 
 function AdminAddProduct() {
   const productCategory = useSelector((state) => state.productCategory.value);
-
   const [photos, setPhotos] = useState([]);
   const [formData, setFormData] = useState({
-    gender: "",
-    type: "",
-    name: "",
+    gender: '',
+    type: '',
+    name: '',
     categories: [],
-    brand: "",
-    price: "",
+    brand: '',
+    price: '',
     size: [],
     colors: [],
-    quantity: "",
-    description: "",
+    quantity: '',
+    description: '',
   });
   const handleChange = (e) => {
     setFormData((prev) => {
@@ -36,34 +36,34 @@ function AdminAddProduct() {
     const data = new FormData();
 
     photos.forEach((value) => {
-      data.append("file", value);
+      data.append('file', value);
     });
     for (let key in formData) {
       data.append(key, formData[key]);
     }
     axios
-      .post("/api/product/checkbeforeaddproduct", formData)
-      .then(() => {
-        axios
-          .post("/api/product/addproduct", data, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(() => {})
-          .catch((err) => console.log(err));
+      .post('/api/product/addproduct', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
+      .then(() => {})
       .catch((err) => console.log(err));
   };
+  const checkInputOnlyAcceptNumber = (e) => {
+    const re = /^[0-9\b]+$/;
+    if (e.target.value === '' || re.test(e.target.value)) handleChange(e);
+  };
   return (
-    <div className={cx("wrapper")}>
-      <form className={cx("container")}>
+    <div className={cx('wrapper')}>
+      <form className={cx('container')}>
         <FieldWrapper title="PHOTOS">
-          <PhotoInput onUpdate={setPhotos} />
-          <PhotoInput onUpdate={setPhotos} />
-          <PhotoInput onUpdate={setPhotos} />
-          <PhotoInput onUpdate={setPhotos} />
+          <PhotoList photos={photos} setPhotos={setPhotos} />
+          <div className={cx('instruction')}>
+          You can add up to 8 photos. The 1st photo will be set as cover (main photo).
+        </div>
         </FieldWrapper>
+        
         <FieldWrapper title="GENDER">
           <Dropdown
             setFormData={setFormData}
@@ -77,8 +77,7 @@ function AdminAddProduct() {
             setFormData={setFormData}
             field="type"
             values={
-              productCategory?.find((a) => a.gender === formData.gender)
-                ?.typeValue
+              productCategory?.find((a) => a.gender === formData.gender)?.typeValue
                 ? productCategory
                     .find((a) => a.gender === formData.gender)
                     .typeValue.map((value, index) => {
@@ -89,12 +88,7 @@ function AdminAddProduct() {
           />
         </FieldWrapper>
         <FieldWrapper title="NAME">
-          <input
-            className={cx("field-input")}
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
+          <input className={cx('field-input')} name="name" value={formData.name} onChange={handleChange} />
         </FieldWrapper>
         <FieldWrapper title="CATEGORIES">
           <Dropdown
@@ -117,67 +111,50 @@ function AdminAddProduct() {
           />
         </FieldWrapper>
         <FieldWrapper title="BRAND">
-          <Dropdown
-            setFormData={setFormData}
-            field="brand"
-            values={["Zara", "H&M", "Pull&Bear", "Dior", "Chanel"]}
-          />
+          <Dropdown setFormData={setFormData} field="brand" values={['Zara', 'H&M', 'Pull&Bear', 'Dior', 'Chanel']} />
         </FieldWrapper>
         <FieldWrapper title="PRICE ($)">
           <input
-            className={cx("field-input")}
+            className={cx('field-input')}
             type="text"
             name="price"
             value={formData.price}
-            onChange={(e) => {
-              const re = /^[0-9\b]+$/;
-              if (e.target.value === "" || re.test(e.target.value))
-                handleChange(e);
-            }}
+            onChange={checkInputOnlyAcceptNumber}
           />
         </FieldWrapper>
         <FieldWrapper title="SIZE">
-          <Dropdown
-            setFormData={setFormData}
-            field="size"
-            values={["S", "M", "L", "XL"]}
-            multiplechoice
-          />
+          <Dropdown setFormData={setFormData} field="size" values={['S', 'M', 'L', 'XL']} multiplechoice />
         </FieldWrapper>
         <FieldWrapper title="COLORS">
           <Dropdown
             setFormData={setFormData}
             field="colors"
-            values={["Blue", "Brown", "Red", "Black"]}
+            values={['Blue', 'Brown', 'Red', 'Black']}
             multiplechoice
           />
         </FieldWrapper>
         <FieldWrapper title="QUANTITY">
           <input
-            className={cx("field-input")}
+            className={cx('field-input')}
             name="quantity"
             type="text"
-            onChange={(e) => {
-              const re = /^[0-9\b]+$/;
-              if (e.target.value === "" || re.test(e.target.value))
-                handleChange(e);
-            }}
+            onChange={checkInputOnlyAcceptNumber}
             value={formData.quantity}
           />
         </FieldWrapper>
         <FieldWrapper title="DESCRIPTION">
           <input
-            className={cx("field-input")}
+            className={cx('field-input')}
             name="description"
             value={formData.description}
             onChange={handleChange}
           />
         </FieldWrapper>
-        <div className={cx("submit")}>
-          <Button className={cx("form-button")} secondary>
+        <div className={cx('submit')}>
+          <Button className={cx('form-button')} secondary>
             Cancel
           </Button>
-          <Button className={cx("form-button")} onClick={handleSubmit} primary>
+          <Button className={cx('form-button')} onClick={handleSubmit} primary>
             Complete
           </Button>
         </div>

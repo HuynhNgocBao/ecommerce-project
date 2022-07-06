@@ -1,8 +1,5 @@
 const express = require('express');
 require('dotenv').config();
-const fs = require("fs");
-const cloudinary = require('cloudinary');
-const Product = require("./models/Product");
 const port = process.env.PORT || 5000;
 const route = require('./routes');
 const connectDB = require('./config/db');
@@ -11,13 +8,12 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 connectDB();
 
 route(app);
-  
-app.listen(port, ()=>{
-    console.log(`App is listening at port ${port}`);
-})
 
+app.listen(port, () => {
+  console.log(`App is listening at port ${port}`);
+});

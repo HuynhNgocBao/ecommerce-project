@@ -5,23 +5,24 @@
   box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.08), 0 -1px 4px 0 rgba(0, 0, 0, 0.08);
 }
 
-.top, .bottom {
+.top,
+.bottom {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.top{
+.top {
   height: 121px;
 }
 
-.bottom{
+.bottom {
   height: 64px;
   position: relative;
-  &::before{
+  &::before {
     position: absolute;
-    content: "";
+    content: '';
     width: 1180px;
     border: 0.8px solid var(--dark-grey);
     opacity: 0.12;
@@ -107,19 +108,19 @@
   color: var(--greyish-two);
 }
 
-.media-icon{
+.media-icon {
   color: var(--greyish-two);
 }
 
-.media-icon ~ .media-icon{
+.media-icon ~ .media-icon {
   margin-left: 15px;
 }
 
-.policy-item ~ .policy-item{
+.policy-item ~ .policy-item {
   margin-left: 15px;
 }
 
-.policy-item{
+.policy-item {
   opacity: 0.4;
   font-size: 12px;
   line-height: 1.83;

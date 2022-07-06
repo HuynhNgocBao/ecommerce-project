@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+const Product = require('../models/Product');
 
 async function getProductService(
   page = 1,
@@ -10,7 +10,7 @@ async function getProductService(
   brandFilter,
   priceFilter,
   availableFilter,
-  sortFilter
+  sortFilter,
 ) {
   const options = {};
   if (genderFilter) {
@@ -20,16 +20,24 @@ async function getProductService(
     options.type = typeFilter;
   }
   if (categoryFilter) {
-    options.categories = { $in: categoryFilter };
+    options.categories = {
+      $in: categoryFilter,
+    };
   }
   if (sizeFilter) {
-    options.size = { $in: sizeFilter };
+    options.size = {
+      $in: sizeFilter,
+    };
   }
   if (colorFilter) {
-    options.colors = { $in: colorFilter };
+    options.colors = {
+      $in: colorFilter,
+    };
   }
   if (brandFilter && brandFilter.length > 0) {
-    options.brand = { $in: brandFilter };
+    options.brand = {
+      $in: brandFilter,
+    };
   }
   if (priceFilter) {
     options.price = {
@@ -37,11 +45,10 @@ async function getProductService(
       $lte: priceFilter.right,
     };
   }
-  if (availableFilter && availableFilter.length===1){
-    if (availableFilter[0] === 0){
-      options.quantity = {$gte: 1};
-    }
-    else{
+  if (availableFilter && availableFilter.length === 1) {
+    if (availableFilter[0] === 0) {
+      options.quantity = { $gte: 1 };
+    } else {
       options.quantity = 0;
     }
   }
@@ -70,25 +77,6 @@ async function getProductService(
   return [products, perPage, total];
 }
 
-async function checkBeforeAddProductService(
-  gender,
-  type,
-  name,
-  categories,
-  brand,
-  price,
-  size,
-  colors,
-  quantity,
-  description
-) {
-  const isProductExists = await Product.findOne({ name });
-  if (!isProductExists) {
-    return true;
-  }
-  return false;
-}
-
 async function addProductService(
   photos,
   gender,
@@ -100,39 +88,52 @@ async function addProductService(
   size,
   colors,
   quantity,
-  description
+  description,
 ) {
-  await Product.create({
-    photos,
-    gender,
-    type,
-    name,
-    categories,
-    brand,
-    price,
-    size,
-    colors,
-    quantity,
-    description,
-  });
-  return true;
+  const isProductExists = await Product.findOne({ name });
+  if (!isProductExists) {
+    await Product.create({
+      photos,
+      gender,
+      type,
+      name,
+      categories,
+      brand,
+      price,
+      size,
+      colors,
+      quantity,
+      description,
+    });
+    return true;
+  } else return false;
 }
 
-async function getProductInfoService(id){
+async function getProductInfoService(id) {
   const product = await Product.findById(id);
   if (product) return product;
   return null;
 }
 
-async function getMoreProductsWithFieldService(field, value){
-  const products = await Product.find({[field]: value});
+async function getMoreProductsWithFieldService(field, value, exceptid) {
+  let products;
+  if (!exceptid)
+    products = await Product.find({
+      [field]: value,
+    });
+  else
+    products = Product.find({
+      [field]: value,
+      _id: {
+        $nin: [exceptid],
+      },
+    });
   if (products) return products;
   else return null;
 }
 
 module.exports = {
   getProductService,
-  checkBeforeAddProductService,
   addProductService,
   getProductInfoService,
   getMoreProductsWithFieldService,

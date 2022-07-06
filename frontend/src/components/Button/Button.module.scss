@@ -13,14 +13,17 @@
   color: var(--pale-orange);
 }
 
-.third{
+.third {
   box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
   background-color: #5f6dff;
   color: var(--white);
   font-weight: 600;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.fourth{
+.fourth {
   box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
   background-color: #ff5f6d;
   color: var(--white);
@@ -31,7 +34,4 @@
   background-color: var(--white);
   color: var(--pale-orange);
   border: 1px solid currentColor;
-  &:hover{
-    opacity: 1;
-  }
 }

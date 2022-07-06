@@ -1,5 +1,5 @@
 function AdminOrders() {
-    return <></>;
+  return <></>;
 }
 
 export default AdminOrders;

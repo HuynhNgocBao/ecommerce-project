@@ -1,9 +1,19 @@
-import styles from "./Button.module.scss";
-import classnames from "classnames/bind";
+import styles from './Button.module.scss';
+import classnames from 'classnames/bind';
 
 const cx = classnames.bind(styles);
 
-function Button({ children, className, primary = false,secondary=false,third=false, fourth=false,disabled = false, onClick, ...passProps }) {
+function Button({
+  children,
+  className,
+  primary = false,
+  secondary = false,
+  third = false,
+  fourth = false,
+  disabled = false,
+  onClick,
+  ...passProps
+}) {
   const classes = cx({
     [className]: className,
     primary,
@@ -15,9 +25,13 @@ function Button({ children, className, primary = false,secondary=false,third=fal
   const props = {
     onClick,
     ...passProps,
-  }
+  };
 
-  return <button className={classes} disabled={disabled} {...props}>{children}</button>;
+  return (
+    <button className={classes} {...props} disabled={disabled}>
+      {children}
+    </button>
+  );
 }
 
 export default Button;

@@ -1,25 +1,19 @@
-import styles from "./AdminAddProduct.module.scss";
-import classnames from "classnames/bind";
-import { useEffect, useState } from "react";
+import styles from './AdminAddProduct.module.scss';
+import classnames from 'classnames/bind';
+import { useEffect, useState } from 'react';
 
 const cx = classnames.bind(styles);
 
-function DropDown({
-  parent = [],
-  setFormData,
-  field,
-  values,
-  multiplechoice = false,
-}) {
+function DropDown({ parent = [], setFormData, field, values, multiplechoice = false }) {
   const [arrowUp, setArrowUp] = useState(false);
   const [showDropdownList, setShowDropdownList] = useState(false);
   const [DropdownResults, setDropdownResults] = useState(() => {
     if (multiplechoice) return [];
-    else return "";
+    else return '';
   });
 
   useEffect(() => {
-    if (!multiplechoice) setDropdownResults((prev) => "");
+    if (!multiplechoice) setDropdownResults((prev) => '');
     else setDropdownResults((prev) => []);
   }, parent);
 
@@ -42,45 +36,37 @@ function DropDown({
     }
     setArrowUp((prev) => !prev);
   };
-
+  const handleDeleleDropdownResult = (e, value) => {
+    e.stopPropagation();
+    setDropdownResults((prev) => {
+      return prev.filter((a) => a !== value);
+    });
+  };
+  const handleClickDropdownHeader = (e) => {
+    setShowDropdownList((prev) => !prev);
+    setArrowUp((prev) => !prev);
+  };
   return (
-    <div className={cx("dropdown")}>
-      <div
-        className={cx("dropdown-header")}
-        onClick={() => {
-          setShowDropdownList((prev) => !prev);
-          setArrowUp((prev) => !prev);
-        }}
-      >
+    <div className={cx('dropdown')}>
+      <div className={cx('dropdown-header')} onClick={handleClickDropdownHeader}>
         {multiplechoice &&
           DropdownResults.map((value, index) => (
-            <div className={cx("dropdown-result-multiple")} key={index}>
+            <div className={cx('dropdown-result-multiple')} key={index}>
               {value}
               <i
-                className={cx("dropdown-result-delete", "icon-cross")}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDropdownResults((prev) => {
-                    return prev.filter((a) => a !== value);
-                  });
-                }}
+                className={cx('dropdown-result-delete', 'icon-cross')}
+                onClick={(e) => handleDeleleDropdownResult(e, value)}
               />
             </div>
           ))}
-        {!multiplechoice && (
-          <div className={cx("dropdown-result")}> {DropdownResults}</div>
-        )}
-        <i className={cx("dropdown-icon", "icon-arrow", { up: arrowUp })} />
+        {!multiplechoice && <div className={cx('dropdown-result')}> {DropdownResults}</div>}
+        <i className={cx('dropdown-icon', 'icon-arrow', { up: arrowUp })} />
       </div>
       {showDropdownList && (
-        <ul className={cx("dropdown-list")}>
+        <ul className={cx('dropdown-list')}>
           {values.map((value, index) => {
             return (
-              <li
-                key={index}
-                className={cx("dropdown-item")}
-                onClick={handleClickDropdownItem}
-              >
+              <li key={index} className={cx('dropdown-item')} onClick={handleClickDropdownItem}>
                 {value}
               </li>
             );
