@@ -10,24 +10,26 @@ import ProductImageList from './ProductImageList';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
 import Quantity from './Quantity';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addShoppingCart, updateShoppingCart } from 'src/features/shoppingCart/shoppingCartSlice';
-import productCategorySlice from 'src/features/productCategory/productCategorySlice';
 const cx = classnames.bind(styles);
 
 function ProductInfo() {
+  const navigate = useNavigate();
   const location = useLocation();
   const search = location.search;
+  const size = new URLSearchParams(search).get('size');
+  const color = new URLSearchParams(search).get('color');
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user.id);
-  const shoppingCart = useSelector((state) => state.shoppingCart.value);
+  const shoppingCarts = useSelector((state) => state.shoppingCart.value);
   const [moreProducts, setMoreProducts] = useState([]);
   const [product, setProduct] = useState(null);
   const { id } = useParams();
+  const [mainImg, setMainImg] = useState(null);
   let mode = new URLSearchParams(search).get('mode');
   if (!mode) mode = 'add';
-  console.log(shoppingCart.find((a) => a.user === user && a.product === id));
   const [filterList, setFilterList] = useState({
     sizeFilter: null,
     colorFilter: null,
@@ -44,6 +46,7 @@ function ProductInfo() {
       .post('/api/product/getproductinfo', { id })
       .then((response) => {
         setProduct((prev) => response.data);
+        setMainImg((prev) => response.data.photos[0]);
         return response.data;
       })
       .then((data) => {
@@ -60,37 +63,45 @@ function ProductInfo() {
     e.preventDefault();
     if (
       mode === 'add' &&
-      !shoppingCart.find((a) => {
-        return a.user === user && a.product === id;
+      !shoppingCarts.find((a) => {
+        return (
+          a.user === user &&
+          a.product === id &&
+          a.productSize === filterList.sizeFilter &&
+          a.productColor === filterList.colorFilter
+        );
       })
     )
       dispatch(
         addShoppingCart({
           productPhoto: product.photos[0],
           productName: product.name,
-          productQuantity: product.quantity,
+          productQuantity: filterList.quantity,
           productPrice: product.price,
-          color: filterList.colorFilter,
-          size: filterList.sizeFilter,
-          quantity: filterList.quantity,
+          productColor: filterList.colorFilter,
+          productSize: filterList.sizeFilter,
           user,
           product: id,
         }),
       );
     else if (mode === 'update') {
-      dispatch(
-        updateShoppingCart({
-          productPhoto: product.photos[0],
-          productName: product.name,
-          productQuantity: product.quantity,
-          productPrice: product.price,
-          color: filterList.colorFilter,
-          size: filterList.sizeFilter,
-          quantity: filterList.quantity,
-          user,
-          product: id,
-        }),
-      );
+      if (size && color)
+        dispatch(
+          updateShoppingCart({
+            filter: { size, color },
+            info: {
+              productPhoto: product.photos[0],
+              productName: product.name,
+              productQuantity: filterList.quantity,
+              productPrice: product.price,
+              productColor: filterList.colorFilter,
+              productSize: filterList.sizeFilter,
+              user,
+              product: id,
+            },
+          }),
+        );
+      navigate('/shoppingcart');
     }
     // axios
     //   .post('/api/shoppingcart/addshoppingcart', {
@@ -102,6 +113,7 @@ function ProductInfo() {
     //   })
     //   .catch((err) => console.log(err));
   };
+
   if (!product) return <></>;
   return (
     <div className={cx('wrapper')}>
@@ -109,8 +121,8 @@ function ProductInfo() {
         {product.gender}/{product.type}
       </Link>
       <div className={cx('container')}>
-        <ProductImageList photos={product.photos}></ProductImageList>
-        <AdvancedImage cldImg={cld.image(product.photos[0])} alt="Product" className={cx('product-img-main')} />
+        <ProductImageList setMainImg={setMainImg} photos={product.photos}></ProductImageList>
+        <AdvancedImage cldImg={cld.image(mainImg)} alt="Product" className={cx('product-img-main')} />
         <div className={cx('product-info')}>
           <span className={cx('product-name')}>{product.name}</span>
           <span className={cx('product-price')}>${product.price}</span>
@@ -125,12 +137,12 @@ function ProductInfo() {
             <span className={cx('product-number-review')}>0 review</span>
           </div>
           <div className={cx('filter-title')}>Size</div>
-          <SizeList values={product.size} setFilterList={setFilterList} />
+          <SizeList defaultValue={size} values={product.size} id={id} setFilterList={setFilterList} />
           <div className={cx('filter-title')}>Color</div>
-          <ColorList values={product.colors} setFilterList={setFilterList} />
+          <ColorList defaultValue={color} values={product.colors} id={id} setFilterList={setFilterList} />
           <div className={cx('quantity-wrapper')}>
             <div className={cx('quantity-title')}>Quantity</div>
-            <Quantity quantityMax={product.quantity} setFilterList={setFilterList} />
+            <Quantity quantityMax={product.quantity} id={id} setFilterList={setFilterList} />
           </div>
           <Button
             third

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { addShoppingCart } from 'src/features/shoppingCart/shoppingCartSlice';
+import { removeShoppingCart, resetShoppingCart } from 'src/features/shoppingCart/shoppingCartSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 const cx = classnames.bind(styles);
@@ -22,11 +22,20 @@ function ShoppingCart() {
       cloudName: process.env.REACT_APP_CLOUD_NAME_CLOUDINARY,
     },
   });
-
+  const total = shoppingCarts.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.productPrice * currentValue.productQuantity;
+  }, 0);
+  const removeAnItemShoppingCart = (e, user, product, productSize, productColor) => {
+    dispatch(removeShoppingCart({ user, product, productSize, productColor }));
+  };
+  const handleSubmit = (e) => {
+    axios.post('/api/shoppingcart/addshoppingcart', { user, shoppingCarts }).catch((err) => console.log(err));
+    dispatch(resetShoppingCart());
+  };
   return (
     <div className={cx('wrapper')}>
       <div className={cx('container', 'grid', 'wide')}>
-        <div className={cx('title')}>MY BAG</div>
+        <div className={cx('title')}>My Bag</div>
         <div className={cx('row')}>
           <div className={cx('info', 'col', 'col-9')}>
             <div className={cx('info-row')}>
@@ -43,7 +52,7 @@ function ShoppingCart() {
                 <div key={index} className={cx('info-row')}>
                   <div className={cx('row')}>
                     <div className={cx('info-product', 'info-item', 'col', 'col-4')}>
-                      <div className={cx('row', "info-item-row")}>
+                      <div className={cx('row', 'info-item-row')}>
                         <div className={cx('col', 'col-4')}>
                           <AdvancedImage
                             className={cx('info-photo')}
@@ -54,23 +63,39 @@ function ShoppingCart() {
                         <div className={cx('col', 'col-4', 'info-name-wrapper')}>
                           <div className={cx('info-name')}>{shoppingCart.productName}</div>
                           <div className={cx('info-action')}>
-                            <Link to={`/productinfo/${shoppingCart.product}?mode=update`}><Button className={cx('info-action-btn')}>Change</Button></Link>
-                            <Button className={cx('info-action-btn')}>Remove</Button>
+                            <Link
+                              className={cx('info-action-btn')}
+                              to={`/productinfo/${shoppingCart.product}?mode=update&size=${shoppingCart.productSize}&color=${shoppingCart.productColor}`}
+                            >
+                              <Button>Change</Button>
+                            </Link>
+                            <Button
+                              className={cx('info-action-btn')}
+                              onClick={(e) => {
+                                removeAnItemShoppingCart(
+                                  e,
+                                  user,
+                                  shoppingCart.product,
+                                  shoppingCart.productSize,
+                                  shoppingCart.productColor,
+                                );
+                              }}
+                            >
+                              Remove
+                            </Button>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className={cx('info-color', 'info-item', 'col', 'col-2')}>
-                      <ColorList values={[shoppingCart.color]} />
+                      <ColorList alwaysCheck values={[shoppingCart.productColor]} />
                     </div>
-                    <div className={cx('info-size', 'info-item', 'col', 'col-2')}>
-                      <SizeList values={[shoppingCart.size]} />
-                    </div>
+                    <div className={cx('info-size', 'info-item', 'col', 'col-2')}>{shoppingCart.productSize}</div>
                     <div className={cx('info-quantity', 'info-item', 'col', 'col-2')}>
-                      <Quantity quantityDefault={shoppingCart.quantity} quantityMax={shoppingCart.productQuantity} />
+                      {shoppingCart.productQuantity}
                     </div>
                     <div className={cx('info-amount', 'info-item', 'col', 'col-2')}>
-                      ${shoppingCart.productPrice * shoppingCart.quantity}
+                      ${shoppingCart.productPrice * shoppingCart.productQuantity}
                     </div>
                   </div>
                 </div>
@@ -85,16 +110,16 @@ function ShoppingCart() {
                 <div className={cx('total-item-price')}>Free</div>
               </div>
               <div className={cx('total-item')}>
-                <div className={cx('total-item-name')}>Shipping & Handling:</div>
-                <div className={cx('total-item-price')}>Free</div>
+                <div className={cx('total-item-name')}>Total product::</div>
+                <div className={cx('total-item-price')}>${total}</div>
               </div>
               <div className={cx('total-item', 'subtotal')}>
                 <div className={cx('total-item-name')}>Subtotal:</div>
-                <div className={cx('total-item-price')}>Free</div>
+                <div className={cx('total-item-price')}>${total}</div>
               </div>
             </div>
-            <Button fourth className={cx('submit-btn')}>
-              Checkout
+            <Button fourth disabled={shoppingCarts.length === 0} className={cx('submit-btn')} onClick={handleSubmit}>
+              Check out
             </Button>
           </div>
         </div>

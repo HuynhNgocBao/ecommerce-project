@@ -74,7 +74,7 @@ function ProductList() {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('container', 'grid', 'wide')}>
-        {filterList.genderFilter && (
+        {filterList.genderFilter && filterList.typeFilter && (
           <span className={cx('path')}>
             {filterList.genderFilter} / {filterList.typeFilter}
           </span>

@@ -3,6 +3,7 @@ const {
   addProductService,
   getProductInfoService,
   getMoreProductsWithFieldService,
+  getProductAdminService,
 } = require('../services/productService');
 
 async function getProduct(req, res) {
@@ -42,7 +43,6 @@ async function addProduct(req, res) {
   const photos = req.files.map((file, index) => {
     return file.filename;
   });
-  console.log(photos);
   if (
     !photos ||
     photos.length === 0 ||
@@ -90,9 +90,20 @@ async function getMoreProductsWithField(req, res) {
   else res.status(400).send('Products not found');
 }
 
+async function getProductAdmin(req, res) {
+  const { page } = req.body;
+  if (!page) {
+    res.status(400).send('Please add all fields');
+    return;
+  }
+  const [products,perPage, total] = await getProductAdminService(page);
+  res.status(200).send({products, perPage, total});
+}
+
 module.exports = {
   getProduct,
   addProduct,
   getProductInfo,
   getMoreProductsWithField,
+  getProductAdmin,
 };

@@ -163,10 +163,12 @@
 
 .arrow-left {
   transform: rotate(90deg);
+  cursor: pointer;
 }
 
 .arrow-right {
   transform: rotate(270deg);
+  cursor: pointer;
 }
 
 .path {

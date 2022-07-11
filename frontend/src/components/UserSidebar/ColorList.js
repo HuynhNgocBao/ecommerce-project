@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 const cx = classnames.bind(styles);
 
-function ColorList({ values = [], setFilterList }) {
+function ColorList({ values = [], id=null,setFilterList, alwaysCheck, defaultValue=null }) {
   const [color, setColor] = useState(null);
   useEffect(() => {
     if (setFilterList)
@@ -11,6 +11,12 @@ function ColorList({ values = [], setFilterList }) {
         return { ...prev, colorFilter: color };
       });
   }, [color]);
+  useEffect(()=>{
+    setColor(prev=>null);
+  },[id])
+  useEffect(()=>{
+    setColor(prev=>defaultValue);
+  },[])
   const handleToggleCheckBox = (e, value) => {
     if (e.target.checked) {
       setColor((prev) => value);
@@ -24,7 +30,7 @@ function ColorList({ values = [], setFilterList }) {
             <input
               type="checkbox"
               className={cx('color-item-checkbox')}
-              checked={color === value}
+              checked={alwaysCheck || color === value}
               onChange={(e) => {
                 handleToggleCheckBox(e, value);
               }}

@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 const cx = classnames.bind(styles);
 
-function Quantity({quantityDefault=0, quantityMax, setFilterList }) {
+function Quantity({quantityDefault=0, id=null, quantityMax, setFilterList }) {
   const [quantity, setQuantity] = useState(quantityDefault);
   useEffect(() => {
     if (setFilterList)
@@ -11,6 +11,9 @@ function Quantity({quantityDefault=0, quantityMax, setFilterList }) {
         return { ...prev, quantity };
       });
   }, [quantity]);
+  useEffect(()=>{
+    setQuantity(prev=>quantityDefault);
+  },[id]);
   const decreaseQuantityByOne = (e) => {
     if (quantity > 0) setQuantity((prev) => prev - 1);
   };

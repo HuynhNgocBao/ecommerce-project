@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const ShoppingCart = require('../models/ShoppingCart');
 
 async function getProductService(
   page = 1,
@@ -132,9 +133,33 @@ async function getMoreProductsWithFieldService(field, value, exceptid) {
   else return null;
 }
 
+async function getProductAdminService(page) {
+  let perPage = 10;
+  const products = await Product.aggregate([
+    {
+      $lookup: {
+        from: 'shoppingcarts',
+        localField: '_id',
+        foreignField: 'product',
+        as: 'shoppingcart',
+      },
+    },
+    { $addFields: {
+      totalQuantity: {
+          $sum: "$shoppingcart.quantity"
+      }
+  } },
+  ])
+    .skip(perPage * page - perPage)
+    .limit(perPage);
+  const total = await Product.find().countDocuments();
+  console.log(products[0]);
+  return [products, perPage, total];
+}
 module.exports = {
   getProductService,
   addProductService,
   getProductInfoService,
   getMoreProductsWithFieldService,
+  getProductAdminService,
 };

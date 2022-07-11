@@ -40,7 +40,11 @@ function UserSidebar({ setFilterList, filterList }) {
                 .typeValue.find((a) => a.name === filterList.typeFilter)
                 .categories.map((categoryName, index) => {
                   return (
-                    <li key={index} className={cx('category-item')} onClick={(e) => handleAddCategory(e, categoryName)}>
+                    <li
+                      key={index}
+                      className={cx('category-item', { active: filterList.categoryFilter === categoryName })}
+                      onClick={(e) => handleAddCategory(e, categoryName)}
+                    >
                       {categoryName}
                     </li>
                   );

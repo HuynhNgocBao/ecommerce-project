@@ -8,8 +8,8 @@ const cx = classnames.bind(styles);
 function AdminLayout({ children }) {
   return (
     <div className={cx('wrapper')}>
-      <AdminSidebar />
-      <div>
+      <div className={cx("sidebar")}><AdminSidebar /></div>
+      <div className={cx("content")}>
         <AdminHeader />
         {children}
       </div>

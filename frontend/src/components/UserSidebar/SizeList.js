@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 const cx = classnames.bind(styles);
 
-function SizeList({ values = [], setFilterList }) {
+function SizeList({ values = [], id=null, setFilterList, defaultValue=null }) {
   const [size, setSize] = useState(null);
   useEffect(() => {
     if (setFilterList)
@@ -11,6 +11,12 @@ function SizeList({ values = [], setFilterList }) {
         return { ...prev, sizeFilter: size };
       });
   }, [size]);
+  useEffect(()=>{
+    setSize(prev=>null);
+  },[id]);
+  useEffect(()=>{
+    setSize(prev=>defaultValue);
+  },[])
   const handleToggleCheckBox = (e, value) => {
     if (e.target.checked) {
       setSize((prev) => value);

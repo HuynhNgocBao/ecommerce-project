@@ -2,9 +2,6 @@
   box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.12);
   background-color: var(--pale-orange);
   color: var(--white);
-  &:hover {
-    opacity: 0.8;
-  }
 }
 
 .secondary {
@@ -18,9 +15,6 @@
   background-color: #5f6dff;
   color: var(--white);
   font-weight: 600;
-  &:hover {
-    opacity: 0.8;
-  }
 }
 
 .fourth {
@@ -34,4 +28,7 @@
   background-color: var(--white);
   color: var(--pale-orange);
   border: 1px solid currentColor;
+  &:hover{
+    opacity: 1;
+  }
 }

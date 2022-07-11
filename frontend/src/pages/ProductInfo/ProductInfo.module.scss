@@ -28,6 +28,7 @@
   flex-direction: column;
   margin-bottom: -20px;
   margin-top: -20px;
+  flex: 1;
 }
 
 .product-img-item {
@@ -42,6 +43,7 @@
 }
 
 .product-img-main {
+  object-fit: cover;
   width: 379px;
   margin-right: 70px;
 }

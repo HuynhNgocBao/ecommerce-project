@@ -51,6 +51,9 @@ button {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover{
+    opacity: 0.8;
+  }
 }
 
 a {
@@ -68,7 +71,6 @@ img{
 .grid {
   width: 100%;
   display: block;
-  padding: 0;
 }
 
 .grid.wide {
@@ -93,6 +95,11 @@ img{
 .col {
   padding-left: 12px;
   padding-right: 12px;
+}
+
+.col-1-5{
+  flex: 0 0 12.5%;
+  max-width: 12.5%;
 }
 
 .col-2 {

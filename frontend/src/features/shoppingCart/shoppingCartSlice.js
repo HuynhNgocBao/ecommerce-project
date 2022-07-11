@@ -17,14 +17,45 @@ export const shoppingCartSlice = createSlice({
     },
     updateShoppingCart: (state, action) => {
       const index = state.value.findIndex(
-        (a) => a.user === action.payload.user && a.product === action.payload.product,
+        (a) =>
+          a.user === action.payload.info.user &&
+          a.product === action.payload.info.product &&
+          a.productSize === action.payload.filter.size &&
+          a.productColor === action.payload.filter.color,
       );
-      state.value[index] = action.payload;
+      if (index >= 0) {
+        if (
+          !state.value.find(
+            (a, i) =>
+              a.user === action.payload.info.user &&
+              a.product === action.payload.info.product &&
+              a.productSize === action.payload.info.productSize &&
+              a.productColor === action.payload.info.productColor &&
+              i !== index
+          )
+        ) {
+          state.value[index] = action.payload.info;
+          localStorage.setItem('shoppingcart', JSON.stringify(state.value));
+        }
+      }
+    },
+    removeShoppingCart: (state, action) => {
+      state.value = state.value.filter(
+        (a) =>
+          a.user !== action.payload.user ||
+          a.product !== action.payload.product ||
+          a.productSize !== action.payload.productSize ||
+          a.productColor !== action.payload.productColor,
+      );
       localStorage.setItem('shoppingcart', JSON.stringify(state.value));
     },
+    resetShoppingCart: (state)=>{
+      state.value = [];
+      localStorage.removeItem("shoppingcart");
+    }
   },
   extraReducers: (builder) => {},
 });
 
-export const { addShoppingCart, updateShoppingCart } = shoppingCartSlice.actions;
+export const { addShoppingCart, updateShoppingCart, removeShoppingCart, resetShoppingCart } = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;
