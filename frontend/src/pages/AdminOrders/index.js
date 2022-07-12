@@ -8,13 +8,13 @@ function AdminOrders() {
   const statusList = ['pending', 'completed', 'canceled'];
   const [total, setTotal] = useState(0);
   const [perPage, setPerPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(Math.ceil(total / perPage));
+  const [totalPage, setTotalPage] = useState(0);
   const [filterList, setFilterList] = useState({
     page: 1,
   });
   const [shoppingCarts, setShoppingCarts] = useState([]);
   useEffect(() => {
-    axios.post('/api/shoppingcart/', {...filterList }).then((response) => {
+    axios.post('/api/shoppingcart/', { ...filterList }).then((response) => {
       setShoppingCarts((prev) => response.data.shoppingCarts);
       setTotal((prev) => response.data.total);
       setPerPage((prev) => response.data.perPage);
@@ -27,19 +27,29 @@ function AdminOrders() {
     const numLeft = page > 2 ? 3 : page;
     const numRight = totalPage - page > 2 ? 2 : totalPage - page;
     const pageList = Array.from(Array.from(Array(totalPage).keys()));
-    return pageList.slice(page-numLeft, page + numRight);
+    return pageList.slice(page - numLeft, page + numRight);
   };
   const nextPage = (totalPage, page) => {
-    if (page + 1 <= totalPage) setFilterList((prev) => {return {...prev,page: page+1}});
+    if (page + 1 <= totalPage)
+      setFilterList((prev) => {
+        return { ...prev, page: page + 1 };
+      });
   };
   const prevPage = (page) => {
-    if (page - 1 >= 1) setFilterList((prev) => {return {...prev,page: page-1}});
+    if (page - 1 >= 1)
+      setFilterList((prev) => {
+        return { ...prev, page: page - 1 };
+      });
   };
   const firstPage = () => {
-    setFilterList((prev) => {return {...prev,page: 1}});
+    setFilterList((prev) => {
+      return { ...prev, page: 1 };
+    });
   };
   const lastPage = (totalPage) => {
-    setFilterList((prev) => {return {...prev,page: totalPage}});
+    setFilterList((prev) => {
+      return { ...prev, page: totalPage };
+    });
   };
   const customTimestamp = (timestamp) => {
     const month = [
@@ -94,7 +104,7 @@ function AdminOrders() {
         <div className={cx('orders-body-wrapper')}>
           {shoppingCarts.map((shoppingCart, index) => {
             return (
-              <div key={index} className={cx('orders-body', 'row', {"dark-theme": index%2===1})}>
+              <div key={index} className={cx('orders-body', 'row', { 'dark-theme': index % 2 === 1 })}>
                 <div className={cx('orders-body-item', 'orders-id', 'col', 'col-1-5')}>{shoppingCart._id}</div>
                 <div className={cx('orders-body-item', 'col', 'col-2')}>{customTimestamp(shoppingCart.updatedAt)}</div>
                 <div className={cx('orders-body-item', 'col', 'col-4')}>

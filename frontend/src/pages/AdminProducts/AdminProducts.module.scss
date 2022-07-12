@@ -5,7 +5,25 @@
   width: 100%;
 }
 
-.container{
+.add-product-btn{
+  position: absolute;
+  right: 0;
+  top: -80px;
+  width: 156px;
+  height: 48px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  color: var(--white);
+}
+
+.container {
   position: relative;
   padding-bottom: 90px;
   padding-left: 20px;
@@ -30,10 +48,44 @@
   color: var(--greyish);
 }
 
+.product-info-wrapper {
+  display: flex;
+}
+
+.product-img {
+  width: 40px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.product-name {
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  color: var(--charcoal-grey);
+}
+
+.product-category{
+  font-size: 12px;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.83;
+  letter-spacing: normal;
+  color: var(--greyish);
+}
+
 .products-body {
   padding: 14px 24px;
   align-items: center;
-  &.dark-theme{
+  &.dark-theme {
     background-color: var(--white-two);
   }
 }
@@ -53,7 +105,7 @@
   font-size: 13px;
 }
 
-.status {
+.action {
   display: inline-block;
   border-radius: 12px;
   padding: 5px 7px;
@@ -78,15 +130,15 @@
   background-color: #f05d62;
 }
 
-.status-wrapper {
+.action-wrapper {
   position: relative;
 }
 
-.status-header:hover .status-options{
+.action-header:hover .action-options {
   display: block;
 }
 
-.status-options {
+.action-options {
   display: none;
   position: absolute;
   right: 0;
@@ -99,9 +151,8 @@
   z-index: 10;
 }
 
-.status-item {
+.action-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-weight: 600;
   font-stretch: normal;
@@ -110,17 +161,17 @@
   letter-spacing: normal;
   padding: 8px 0;
   color: var(--charcoal-grey);
-  &:hover{
+  &:hover {
     background-color: var(--white-three);
     cursor: pointer;
   }
 }
 
-.status-item ~ .status-item{
-  // margin-top: 16px;
+.action-icon{
+  margin-right: 12px;
 }
 
-.status-color {
+.action-color {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -176,6 +227,6 @@
   justify-content: space-around;
 }
 
-.page-icon-dropdown{
-    padding-top: 8px;
+.page-icon-dropdown {
+  padding-top: 8px;
 }

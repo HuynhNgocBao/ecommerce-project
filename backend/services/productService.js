@@ -144,22 +144,65 @@ async function getProductAdminService(page) {
         as: 'shoppingcart',
       },
     },
-    { $addFields: {
-      totalQuantity: {
-          $sum: "$shoppingcart.quantity"
-      }
-  } },
+    {
+      $addFields: {
+        totalQuantity: {
+          $sum: '$shoppingcart.quantity',
+        },
+      },
+    },
   ])
     .skip(perPage * page - perPage)
     .limit(perPage);
   const total = await Product.find().countDocuments();
-  console.log(products[0]);
   return [products, perPage, total];
 }
+
+async function deleteProductService(id) {
+  await ShoppingCart.deleteMany({product: id});
+  await Product.findByIdAndDelete(id);
+  return true;
+}
+
+async function updateProductService(
+  id,
+  photos,
+  gender,
+  type,
+  name,
+  categories,
+  brand,
+  price,
+  size,
+  colors,
+  quantity,
+  description,
+) {
+  const isProductExists = await Product.findById(id);
+  if (isProductExists) {
+    await Product.findByIdAndUpdate(id,{
+      photos,
+      gender,
+      type,
+      name,
+      categories,
+      brand,
+      price,
+      size,
+      colors,
+      quantity,
+      description,
+    });
+    return true;
+  } else return false;
+}
+
 module.exports = {
   getProductService,
   addProductService,
   getProductInfoService,
   getMoreProductsWithFieldService,
   getProductAdminService,
+  deleteProductService,
+  updateProductService,
 };

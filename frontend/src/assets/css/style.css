@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?hiyvbt');
-  src:  url('fonts/icomoon.eot?hiyvbt#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?hiyvbt') format('truetype'),
-    url('fonts/icomoon.woff?hiyvbt') format('woff'),
-    url('fonts/icomoon.svg?hiyvbt#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?esijvu');
+  src:  url('fonts/icomoon.eot?esijvu#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?esijvu') format('truetype'),
+    url('fonts/icomoon.woff?esijvu') format('woff'),
+    url('fonts/icomoon.svg?esijvu#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -33,6 +33,12 @@
   content: "\e911";
   margin-left: -4.7998046875em;
   color: rgb(255, 127, 36);
+}
+.icon-edit:before {
+  content: "\e916";
+}
+.icon-remove:before {
+  content: "\e917";
 }
 .icon-first:before {
   content: "\e912";

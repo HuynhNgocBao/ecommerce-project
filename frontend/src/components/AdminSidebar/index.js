@@ -11,8 +11,8 @@ function AdminSidebar() {
       <img src={Logo} alt="Logo" className={cx('logo')} />
       <div className={cx('nav-list')}>
         <NavItemAdminSidebar to="/" iconName="icon-overview" title="Overview" />
-        <NavItemAdminSidebar to="/" iconName="icon-cart" title="Orders" />
-        <NavItemAdminSidebar to="/" iconName="icon-products" title="Products" />
+        <NavItemAdminSidebar to="/admin/orders" iconName="icon-cart" title="Orders" />
+        <NavItemAdminSidebar to="/admin/products" iconName="icon-products" title="Products" />
         <NavItemAdminSidebar to="/" iconName="icon-payment" title="Payments" />
         <NavItemAdminSidebar to="/" iconName="icon-promotion" title="Promotions" />
         <NavItemAdminSidebar to="/" iconName="icon-setting" title="Setting" />

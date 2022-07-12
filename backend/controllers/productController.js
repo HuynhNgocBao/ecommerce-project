@@ -4,6 +4,8 @@ const {
   getProductInfoService,
   getMoreProductsWithFieldService,
   getProductAdminService,
+  deleteProductService,
+  updateProductService,
 } = require('../services/productService');
 
 async function getProduct(req, res) {
@@ -100,10 +102,60 @@ async function getProductAdmin(req, res) {
   res.status(200).send({products, perPage, total});
 }
 
+async function deleteProduct(req,res){
+  const {id} = req.body;
+  await deleteProductService(id);
+  res.status(200).send("Delete product successfully");
+}
+
+async function updateProduct(req, res) {
+  const {id, gender, type, name, brand, price, quantity, description } = req.body;
+  categories = req.body.categories.split(',');
+  size = req.body.size.split(',');
+  colors = req.body.colors.split(',');
+  const photos = req.files.map((file, index) => {
+    return file.filename;
+  });
+  if (
+    !photos ||
+    photos.length === 0 ||
+    !gender ||
+    !type ||
+    !name ||
+    !categories ||
+    !brand ||
+    !price ||
+    !size ||
+    !colors ||
+    !quantity ||
+    !description
+  ) {
+    res.status(400).send('Please add all fields');
+    return;
+  }
+  const isSuccess = updateProductService(
+    id,
+    photos,
+    gender,
+    type,
+    name,
+    categories,
+    brand,
+    price,
+    size,
+    colors,
+    quantity,
+    description,
+  );
+  if (isSuccess) res.status(200).send('Update successfully');
+}
+
 module.exports = {
   getProduct,
   addProduct,
   getProductInfo,
   getMoreProductsWithField,
   getProductAdmin,
+  deleteProduct,
+  updateProduct,
 };

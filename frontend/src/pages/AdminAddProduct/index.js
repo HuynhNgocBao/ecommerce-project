@@ -1,17 +1,23 @@
 import styles from './AdminAddProduct.module.scss';
 import axios from 'axios';
 import classnames from 'classnames/bind';
-import PhotoInput from './PhotoInput';
 import FieldWrapper from './FieldWrapper';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Dropdown from './Dropdown';
 import Button from 'src/components/Button';
 import PhotoList from './PhotoList';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const cx = classnames.bind(styles);
 
 function AdminAddProduct() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const search = location.search;
+  const id = new URLSearchParams(search).get('id');
+  let mode = new URLSearchParams(search).get('mode');
+  if (!mode) mode = 'add';
   const productCategory = useSelector((state) => state.productCategory.value);
   const [photos, setPhotos] = useState([]);
   const [formData, setFormData] = useState({
@@ -41,14 +47,29 @@ function AdminAddProduct() {
     for (let key in formData) {
       data.append(key, formData[key]);
     }
-    axios
-      .post('/api/product/addproduct', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(() => {})
-      .catch((err) => console.log(err));
+    if (mode === 'add') {
+      axios
+        .post('/api/product/addproduct', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(() => {})
+        .catch((err) => console.log(err));
+    }
+    else if (mode==="update" && id){
+      data.append("id",id);
+      axios
+        .put('/api/product/updateproduct', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(() => {
+          navigate('/admin/products');
+        })
+        .catch((err) => console.log(err));
+    }
   };
   const checkInputOnlyAcceptNumber = (e) => {
     const re = /^[0-9\b]+$/;
@@ -60,10 +81,10 @@ function AdminAddProduct() {
         <FieldWrapper title="PHOTOS">
           <PhotoList photos={photos} setPhotos={setPhotos} />
           <div className={cx('instruction')}>
-          You can add up to 8 photos. The 1st photo will be set as cover (main photo).
-        </div>
+            You can add up to 8 photos. The 1st photo will be set as cover (main photo).
+          </div>
         </FieldWrapper>
-        
+
         <FieldWrapper title="GENDER">
           <Dropdown
             setFormData={setFormData}

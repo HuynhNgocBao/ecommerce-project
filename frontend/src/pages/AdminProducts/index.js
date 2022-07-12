@@ -2,21 +2,28 @@ import styles from './AdminProducts.module.scss';
 import classnames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { AdvancedImage } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
+import Button from 'src/components/Button';
 const cx = classnames.bind(styles);
 
 function AdminProducts() {
-  const userId = useSelector((state) => state.auth.user.id);
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: process.env.REACT_APP_CLOUD_NAME_CLOUDINARY,
+    },
+  });
   const [total, setTotal] = useState(0);
   const [perPage, setPerPage] = useState(1);
   const [totalPage, setTotalPage] = useState(Math.ceil(total / perPage));
   const [filterList, setFilterList] = useState({
     page: 1,
   });
-  const [shoppingCarts, setShoppingCarts] = useState([]);
+  const [products, setProducts] = useState([]);
   useEffect(() => {
-    axios.post('/api/shoppingcart/getproduct', { user: userId, ...filterList }).then((response) => {
-      setShoppingCarts((prev) => response.data.shoppingCarts);
+    axios.post('/api/product/getproductadmin', { ...filterList }).then((response) => {
+      setProducts((prev) => response.data.products);
       setTotal((prev) => response.data.total);
       setPerPage((prev) => response.data.perPage);
     });
@@ -75,9 +82,19 @@ function AdminProducts() {
       return { ...prev, page };
     });
   };
+  const removeProduct = (id) => {
+    axios.delete('/api/product/deleteproduct', {data: {id}})
+    .then(() => {
+      setProducts((prev) => {
+        return prev.filter(a=>a._id!==id);
+      });
+    })
+    .catch((err) => console.log(err));
+  };
   return (
     <div className={cx('wrapper')}>
       <div className={cx('grid', 'wide', 'container')}>
+      <Link to={`/admin/addproduct`}><Button className={cx("add-product-btn")}primary><i className={cx("icon-plus")}/>Add product</Button></Link>
         <div className={cx('products-title', 'row')}>
           <div className={cx('products-title-item', 'col', 'col-4')}>Products</div>
           <div className={cx('products-title-item', 'col', 'col-2')}>Sold</div>
@@ -86,25 +103,38 @@ function AdminProducts() {
           <div className={cx('products-title-item', 'col', 'col-2')}></div>
         </div>
         <div className={cx('products-body-wrapper')}>
-          {shoppingCarts.map((shoppingCart, index) => {
+          {products.map((product, index) => {
             return (
               <div key={index} className={cx('products-body', 'row', { 'dark-theme': index % 2 === 1 })}>
-                <div className={cx('products-body-item', 'col', 'col-4')}>{shoppingCart.product.name}</div>
-                <div className={cx('products-body-item', 'col', 'col-2')}>
-                  {shoppingCart.quantity}/{shoppingCart.product.quantity}
+                <div className={cx('products-body-item', 'col', 'col-4')}>
+                  <div className={cx('product-info-wrapper')}>
+                    <AdvancedImage className={cx('product-img')} cldImg={cld.image(product.photos[0])} />
+                    <div className={cx('product-info')}>
+                      <div className={cx('product-name')}>{product.name}</div>
+                      <div className={cx('product-category')}>
+                        {product.gender} , {product.categories[0]}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className={cx('products-body-item', 'col', 'col-2')}>
-                  {customTimestamp(shoppingCart.product.updatedAt)}
+                  {product.totalQuantity}/{product.quantity}
                 </div>
+                <div className={cx('products-body-item', 'col', 'col-2')}>{customTimestamp(product.updatedAt)}</div>
+                <div className={cx('products-body-item', 'col', 'col-2')}>{product.totalQuantity * product.price}</div>
                 <div className={cx('products-body-item', 'col', 'col-2')}>
-                  {shoppingCart.quantity * shoppingCart.product.price}
-                </div>
-                <div className={cx('products-body-item', 'col', 'col-2')}>
-                  <div className={cx('status-wrapper')}>
-                    <div className={cx('status-header')}>
+                  <div className={cx('action-wrapper')}>
+                    <div className={cx('action-header')}>
                       Action <i className={cx('icon-arrow', 'dropdown-icon')}></i>
-                      <div className={cx('status-options')}>
-                        
+                      <div className={cx('action-options')}>
+                        <Link to={`/admin/addproduct?id=${product._id}&mode=update`} className={cx('action-item')}>
+                          <i className={cx('icon-edit', 'action-icon')} />
+                          <div className={cx('action-name')}>Edit</div>
+                        </Link>
+                        <div className={cx('action-item')} onClick={(e) => removeProduct(product._id)}>
+                          <i className={cx('icon-remove', 'action-icon')} />
+                          <div className={cx('action-name')}>Remove</div>
+                        </div>
                       </div>
                     </div>
                   </div>
