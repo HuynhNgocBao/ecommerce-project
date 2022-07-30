@@ -62,7 +62,7 @@ async function addProduct(req, res) {
     res.status(400).send('Please add all fields');
     return;
   }
-  const isSuccess = addProductService(
+  const isSuccess = await addProductService(
     photos,
     gender,
     type,
@@ -76,6 +76,7 @@ async function addProduct(req, res) {
     description,
   );
   if (isSuccess) res.status(200).send('Upload successfully');
+  else res.status(400).send('Product exists');
 }
 
 async function getProductInfo(req, res) {

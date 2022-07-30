@@ -4,19 +4,25 @@ import { useEffect, useState } from 'react';
 
 const cx = classnames.bind(styles);
 
-function DropDown({ parent = [], setFormData, field, values, multiplechoice = false }) {
+function DropDown({ parent = [], defaultValue = null, setFormData, field, values, multiplechoice = false }) {
   const [arrowUp, setArrowUp] = useState(false);
   const [showDropdownList, setShowDropdownList] = useState(false);
   const [DropdownResults, setDropdownResults] = useState(() => {
-    if (multiplechoice) return [];
+    if (defaultValue) {
+      return defaultValue;
+    }
+    else if (multiplechoice) return [];
     else return '';
   });
-
+  useEffect(()=>{
+    setDropdownResults(prev=>defaultValue);
+  },[defaultValue]);
   useEffect(() => {
-    if (!multiplechoice) setDropdownResults((prev) => '');
+    if (defaultValue) setDropdownResults(prev=>defaultValue);
+    else if (!multiplechoice) setDropdownResults((prev) => '');
     else setDropdownResults((prev) => []);
   }, parent);
-
+  
   useEffect(() => {
     setFormData((prev) => {
       return { ...prev, [field]: DropdownResults };
