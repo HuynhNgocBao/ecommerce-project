@@ -20,6 +20,7 @@ function AdminAddProduct() {
   if (!mode) mode = 'add';
   const productCategory = useSelector((state) => state.productCategory.value);
   const [photos, setPhotos] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     gender: '',
     type: '',
@@ -54,11 +55,12 @@ function AdminAddProduct() {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then(() => {})
-        .catch((err) => console.log(err));
-    }
-    else if (mode==="update" && id){
-      data.append("id",id);
+        .then(() => {
+          setErrorMsg(prev=>'');
+        })
+        .catch((err) => setErrorMsg(prev=>err.response.data));
+    } else if (mode === 'update' && id) {
+      data.append('id', id);
       axios
         .put('/api/product/updateproduct', data, {
           headers: {
@@ -68,9 +70,19 @@ function AdminAddProduct() {
         .then(() => {
           navigate('/admin/products');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => setErrorMsg(prev=>err.response.data));
     }
   };
+
+  useEffect(() => {
+    if (mode === 'update' && id) {
+      axios.post('/api/product/getproductinfo', { id }).then((response) => {
+        const { _id, updatedAt, createdAt, photos, __v, ...rest } = response.data;
+        setFormData((prev) => rest);
+      });
+    }
+  }, []);
+
   const checkInputOnlyAcceptNumber = (e) => {
     const re = /^[0-9\b]+$/;
     if (e.target.value === '' || re.test(e.target.value)) handleChange(e);
@@ -84,9 +96,10 @@ function AdminAddProduct() {
             You can add up to 8 photos. The 1st photo will be set as cover (main photo).
           </div>
         </FieldWrapper>
-
+        <FieldWrapper><span className={cx("error")}>{errorMsg}</span></FieldWrapper>
         <FieldWrapper title="GENDER">
           <Dropdown
+            defaultValue={formData.gender}
             setFormData={setFormData}
             field="gender"
             values={productCategory.map((value, index) => value.gender)}
@@ -95,6 +108,7 @@ function AdminAddProduct() {
         <FieldWrapper title="TYPE">
           <Dropdown
             parent={[formData.gender]}
+            defaultValue={formData.type}
             setFormData={setFormData}
             field="type"
             values={
@@ -114,6 +128,7 @@ function AdminAddProduct() {
         <FieldWrapper title="CATEGORIES">
           <Dropdown
             parent={[formData.gender, formData.type]}
+            defaultValue={formData.categories}
             setFormData={setFormData}
             field="categories"
             values={
@@ -132,7 +147,7 @@ function AdminAddProduct() {
           />
         </FieldWrapper>
         <FieldWrapper title="BRAND">
-          <Dropdown setFormData={setFormData} field="brand" values={['Zara', 'H&M', 'Pull&Bear', 'Dior', 'Chanel']} />
+          <Dropdown setFormData={setFormData} defaultValue={formData.brand} field="brand" values={['Zara', 'H&M', 'Pull&Bear', 'Dior', 'Chanel']} />
         </FieldWrapper>
         <FieldWrapper title="PRICE ($)">
           <input
@@ -144,11 +159,12 @@ function AdminAddProduct() {
           />
         </FieldWrapper>
         <FieldWrapper title="SIZE">
-          <Dropdown setFormData={setFormData} field="size" values={['S', 'M', 'L', 'XL']} multiplechoice />
+          <Dropdown setFormData={setFormData} defaultValue={formData.size} field="size" values={['S', 'M', 'L', 'XL']} multiplechoice />
         </FieldWrapper>
         <FieldWrapper title="COLORS">
           <Dropdown
             setFormData={setFormData}
+            defaultValue={formData.colors}
             field="colors"
             values={['Blue', 'Brown', 'Red', 'Black']}
             multiplechoice
