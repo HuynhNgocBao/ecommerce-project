@@ -13,7 +13,7 @@ app.use(cookieParser());
 connectDB();
 
 route(app);
-
+app.use(express.static('frontend'));
 app.listen(port, () => {
   console.log(`App is listening at port ${port}`);
 });
